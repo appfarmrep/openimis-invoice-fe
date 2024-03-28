@@ -12,12 +12,10 @@ import { injectIntl } from "react-intl";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { withTheme, withStyles } from "@material-ui/core/styles";
-import Button from "@material-ui/core/Button";
 import { RIGHT_INVOICE_UPDATE, STATUS } from "../constants";
-import { fetchInvoice, deleteInvoice, updateInvoice } from "../actions";
+import { fetchInvoice, deleteInvoice } from "../actions";
 import InvoiceHeadPanel from "../components/InvoiceHeadPanel";
 import DeleteIcon from "@material-ui/icons/Delete";
-import EditIcon from "@material-ui/icons/Edit";
 import { getEnumValue } from "../util/enum";
 import InvoiceTabPanel from "../components/InvoiceTabPanel";
 import { ACTION_TYPE } from "../reducer";
@@ -52,13 +50,10 @@ const InvoicePage = ({
 
   useEffect(() => {
     if (prevSubmittingMutationRef.current && !submittingMutation) {
-      if (mutation && mutation.actionType === ACTION_TYPE.DELETE_INVOICE) {
-        back();
-      } else if (mutation && mutation.actionType === ACTION_TYPE.UPDATE_INVOICE) {
-        history.push('/invoices');
-      }
+      journalize(mutation);
+      mutation?.actionType === ACTION_TYPE.DELETE_INVOICE && back();
     }
-  }, [submittingMutation, mutation]);
+  }, [submittingMutation]);
 
   useEffect(() => {
     prevSubmittingMutationRef.current = submittingMutation;
@@ -73,18 +68,10 @@ const InvoicePage = ({
   const titleParams = (invoice) => ({ label: invoice?.code });
 
   const deleteInvoiceCallback = () =>
-    invoice && deleteInvoice(
+    deleteInvoice(
       invoice,
       formatMessageWithValues(intl, "invoice", "invoice.delete.mutationLabel", {
-        code: invoice.code,
-      }),
-    );
-
-  const updateInvoiceCallback = () =>
-    editedInvoice && updateInvoice(
-      editedInvoice,
-      formatMessageWithValues(intl, "invoice", "invoice.update.mutationLabel", {
-        code: editedInvoice.code,
+        code: invoice?.code,
       }),
     );
 
@@ -99,16 +86,12 @@ const InvoicePage = ({
   };
 
   const actions = [
-    invoice && getEnumValue(invoice.status) !== STATUS.PAID && {
-      doIt: openDeleteInvoiceConfirmDialog,
-      icon: <DeleteIcon />,
-      tooltip: formatMessage(intl, "invoice", "deleteButtonTooltip"),
-    },
-    rights.includes(RIGHT_INVOICE_UPDATE) && {
-      doIt: updateInvoiceCallback,
-      icon: <EditIcon />,
-      tooltip: formatMessage(intl, "invoice", "updateButtonTooltip"),
-    },
+    !!invoice &&
+      getEnumValue(invoice?.status) !== STATUS.PAID && {
+        doIt: openDeleteInvoiceConfirmDialog,
+        icon: <DeleteIcon />,
+        tooltip: formatMessage(intl, "invoice", "deleteButtonTooltip"),
+      },
   ];
 
   return (
@@ -128,9 +111,6 @@ const InvoicePage = ({
           actions={actions}
           setConfirmedAction={setConfirmedAction}
         />
-        <Button onClick={updateInvoiceCallback} color="primary" variant="contained">
-          {formatMessage(intl, "invoice", "updateButtonLabel")}
-        </Button>
       </div>
     )
   );
@@ -150,7 +130,7 @@ const mapStateToProps = (state, props) => ({
 });
 
 const mapDispatchToProps = (dispatch) =>
-  bindActionCreators({ fetchInvoice, deleteInvoice, updateInvoice, coreConfirm, journalize }, dispatch);
+  bindActionCreators({ fetchInvoice, deleteInvoice, coreConfirm, journalize }, dispatch);
 
 export default withHistory(
   injectIntl(withTheme(withStyles(defaultPageStyles)(connect(mapStateToProps, mapDispatchToProps)(InvoicePage)))),

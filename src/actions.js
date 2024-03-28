@@ -243,21 +243,6 @@ export function fetchInvoiceEvents(params) {
   return graphql(payload, ACTION_TYPE.SEARCH_INVOICE_EVENTS);
 }
 
-export function updateInvoice(invoice, clientMutationLabel) {
-  const mutation = formatMutation("updateInvoice", formatInvoiceGQL(invoice), clientMutationLabel);
-  const requestedDateTime = new Date();
-  return graphql(
-    mutation.payload,
-    [REQUEST(ACTION_TYPE.MUTATION), SUCCESS(ACTION_TYPE.UPDATE_INVOICE), ERROR(ACTION_TYPE.MUTATION)],
-    {
-      actionType: ACTION_TYPE.UPDATE_INVOICE,
-      clientMutationId: mutation.clientMutationId,
-      clientMutationLabel,
-      requestedDateTime,
-    },
-  );
-}
-
 export function deleteInvoice(invoice, clientMutationLabel) {
   const invoiceUuids = `uuids: ["${invoice?.id}"]`;
   const mutation = formatMutation("deleteInvoice", invoiceUuids, clientMutationLabel);

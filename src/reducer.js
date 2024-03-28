@@ -507,19 +507,6 @@ function reducer(
 
     case REQUEST(ACTION_TYPE.MUTATION):
       return dispatchMutationReq(state, action);
-    case SUCCESS(ACTION_TYPE.UPDATE_INVOICE):
-      return {
-        ...state,
-        submittingMutation: false,
-        mutation: action.payload.data.updateInvoice,
-        errorInvoice: formatGraphQLError(action.payload),
-      };
-    case ERROR(ACTION_TYPE.UPDATE_INVOICE):
-      return {
-        ...state,
-        submittingMutation: false,
-        errorInvoice: formatServerError(action.payload),
-      };
     case ERROR(ACTION_TYPE.MUTATION):
       return dispatchMutationErr(state, action);
     case SUCCESS(ACTION_TYPE.DELETE_INVOICE):
