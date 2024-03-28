@@ -9,7 +9,7 @@ import { getSubjectAndThirdpartyTypePicker } from "../util/subject-and-thirdpart
 import InvoiceStatusPicker from "../pickers/InvoiceStatusPicker";
 import { defaultHeadPanelStyles } from "../util/styles";
 
-const InvoiceHeadPanel = ({ modulesManager, classes, invoice, mandatoryFieldsEmpty }) => {
+const InvoiceHeadPanel = ({onInvoiceChange, modulesManager, classes, invoice, mandatoryFieldsEmpty }) => {
   const taxAnalysisTotal = !!invoice?.taxAnalysis ? JSON.parse(invoice.taxAnalysis)?.["total"] : null;
   return (
     <>
@@ -119,7 +119,13 @@ const InvoiceHeadPanel = ({ modulesManager, classes, invoice, mandatoryFieldsEmp
           <NumberInput module="invoice" label="invoice.amountTotal" displayZero value={invoice?.amountTotal} readOnly />
         </Grid>
         <Grid item xs={3} className={classes.item}>
-          <InvoiceStatusPicker label="invoice.status.label" withNull value={invoice?.status} readOnly />
+          <InvoiceStatusPicker
+            label="invoice.status.label"
+            withNull
+            value={invoice?.status}
+            readOnly={false}
+            onChange={(v) => onInvoiceChange('status', v)}
+          />
         </Grid>
         <Grid item xs={3} className={classes.item}>
           <TextInput module="invoice" label="invoice.currencyTpCode" value={invoice?.currencyTpCode} readOnly />
@@ -128,13 +134,25 @@ const InvoiceHeadPanel = ({ modulesManager, classes, invoice, mandatoryFieldsEmp
           <TextInput module="invoice" label="invoice.currencyCode" value={invoice?.currencyCode} readOnly />
         </Grid>
         <Grid item xs={3} className={classes.item}>
-          <TextInput module="invoice" label="invoice.note" value={invoice?.note} readOnly />
+          <TextInput
+            module="invoice"
+            label="invoice.note"
+            value={invoice?.note}
+            readOnly={false}
+            onChange={(v) => onInvoiceChange('note', v)}
+          />
         </Grid>
         <Grid item xs={3} className={classes.item}>
           <TextInput module="invoice" label="invoice.terms" value={invoice?.terms} readOnly />
         </Grid>
         <Grid item xs={3} className={classes.item}>
-          <TextInput module="invoice" label="invoice.paymentReference" value={invoice?.paymentReference} readOnly />
+          <TextInput
+            module="invoice"
+            label="invoice.paymentReference"
+            value={invoice?.paymentReference}
+            readOnly={false}
+            onChange={(v) => onInvoiceChange('paymentReference', v)}
+          />
         </Grid>
       </Grid>
     </>

@@ -13,7 +13,7 @@ import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { withTheme, withStyles } from "@material-ui/core/styles";
 import { RIGHT_INVOICE_UPDATE, STATUS } from "../constants";
-import { fetchInvoice, deleteInvoice } from "../actions";
+import { fetchInvoice, deleteInvoice, updateInvoice } from "../actions";
 import InvoiceHeadPanel from "../components/InvoiceHeadPanel";
 import DeleteIcon from "@material-ui/icons/Delete";
 import { getEnumValue } from "../util/enum";
@@ -94,6 +94,12 @@ const InvoicePage = ({
       },
   ];
 
+  const onInvoiceChange = (field, value) => {
+    const updatedInvoice = { ...invoice, [field]: value };
+    setEditedInvoice(updatedInvoice);
+    updateInvoice(updatedInvoice);
+  };
+
   return (
     rights.includes(RIGHT_INVOICE_UPDATE) && (
       <div className={classes.page}>
@@ -105,7 +111,7 @@ const InvoicePage = ({
           invoice={editedInvoice}
           back={back}
           onChange={onChange}
-          HeadPanel={InvoiceHeadPanel}
+          HeadPanel={InvoiceHeadPanel(onInvoiceChange)}
           Panels={[InvoiceTabPanel]}
           rights={rights}
           actions={actions}
@@ -130,7 +136,7 @@ const mapStateToProps = (state, props) => ({
 });
 
 const mapDispatchToProps = (dispatch) =>
-  bindActionCreators({ fetchInvoice, deleteInvoice, coreConfirm, journalize }, dispatch);
+  bindActionCreators({ fetchInvoice, deleteInvoice, coreConfirm, journalize, updateInvoice }, dispatch);
 
 export default withHistory(
   injectIntl(withTheme(withStyles(defaultPageStyles)(connect(mapStateToProps, mapDispatchToProps)(InvoicePage)))),
