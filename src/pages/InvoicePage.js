@@ -13,7 +13,7 @@ import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { withTheme, withStyles } from "@material-ui/core/styles";
 import { RIGHT_INVOICE_UPDATE, STATUS } from "../constants";
-import { fetchInvoice, deleteInvoice } from "../actions";
+import { fetchInvoice, deleteInvoice, updateInvoice } from "../actions";
 import InvoiceHeadPanel from "../components/InvoiceHeadPanel";
 import DeleteIcon from "@material-ui/icons/Delete";
 import { getEnumValue } from "../util/enum";
