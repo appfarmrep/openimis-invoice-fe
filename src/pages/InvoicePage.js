@@ -12,6 +12,7 @@ import { injectIntl } from "react-intl";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { withTheme, withStyles } from "@material-ui/core/styles";
+import Button from "@material-ui/core/Button";
 import { RIGHT_INVOICE_UPDATE, STATUS } from "../constants";
 import { fetchInvoice, deleteInvoice, updateInvoice } from "../actions";
 import InvoiceHeadPanel from "../components/InvoiceHeadPanel";
