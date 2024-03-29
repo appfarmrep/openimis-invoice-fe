@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { Grid, Divider, Typography } from "@material-ui/core";
 import { withModulesManager, TextInput, FormattedMessage, PublishedComponent, NumberInput } from "@openimis/fe-core";
 import { injectIntl } from "react-intl";
@@ -10,13 +10,11 @@ import InvoiceStatusPicker from "../pickers/InvoiceStatusPicker";
 import { defaultHeadPanelStyles } from "../util/styles";
 
 const InvoiceHeadPanel = ({ modulesManager, classes, invoice, mandatoryFieldsEmpty }) => {
-  const [invoiceStatus, setInvoiceStatus] = React.useState(invoice?.status);
-  const taxAnalysisTotal = !!invoice?.taxAnalysis ? JSON.parse(invoice.taxAnalysis)?.["total"] : null;
+  const taxAnalysisTotal = useMemo(() => !!invoice?.taxAnalysis ? JSON.parse(invoice.taxAnalysis)?.["total"] : null, [invoice?.taxAnalysis]);
 
-  const handleStatusChange = (v) => {
-    setInvoiceStatus(v);
-    onChange({ ...invoice, status: v });
-  };
+  const handleStatusChange = useMemo(() => (v) => onChange({ ...invoice, status: v }), [invoice, onChange]);
+  const handleNoteChange = useMemo(() => (v) => onChange({ ...invoice, note: v }), [invoice, onChange]);
+  const handlePaymentReferenceChange = useMemo(() => (v) => onChange({ ...invoice, paymentReference: v }), [invoice, onChange]);
 
   return (
     <>
@@ -128,7 +126,7 @@ const InvoiceHeadPanel = ({ modulesManager, classes, invoice, mandatoryFieldsEmp
         <Grid item xs={3} className={classes.item}>
           <InvoiceStatusPicker
             label="invoice.status.label"
-            value={invoiceStatus}
+            value={invoice?.status}
             onChange={handleStatusChange}
           />
         </Grid>
@@ -137,7 +135,7 @@ const InvoiceHeadPanel = ({ modulesManager, classes, invoice, mandatoryFieldsEmp
             module="invoice"
             label="invoice.note"
             value={invoice?.note}
-            onChange={(v) => onChange({ ...invoice, note: v })}
+            onChange={handleNoteChange}
           />
         </Grid>
         <Grid item xs={3} className={classes.item}>
@@ -148,7 +146,7 @@ const InvoiceHeadPanel = ({ modulesManager, classes, invoice, mandatoryFieldsEmp
             module="invoice"
             label="invoice.paymentReference"
             value={invoice?.paymentReference}
-            onChange={(v) => onChange({ ...invoice, paymentReference: v })}
+            onChange={handlePaymentReferenceChange}
           />
         </Grid>
       </Grid>
@@ -157,4 +155,3 @@ const InvoiceHeadPanel = ({ modulesManager, classes, invoice, mandatoryFieldsEmp
 };
 
 export default withModulesManager(injectIntl(withTheme(withStyles(defaultHeadPanelStyles)(InvoiceHeadPanel))));
-
