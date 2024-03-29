@@ -18,11 +18,12 @@ const InvoiceHeadPanel = ({ modulesManager, classes, invoice, mandatoryFieldsEmp
     }
   });
 
-  const onSubmit = data => console.log(data);
+  // Register the status field
+  register({ name: 'status' });
 
   const taxAnalysisTotal = !!invoice?.taxAnalysis ? JSON.parse(invoice.taxAnalysis)?.["total"] : null;
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <>
       <Grid container className={classes.tableTitle}>
         <Grid item>
           <Grid container align="center" justify="center" direction="column" className={classes.fullHeight}>
@@ -129,7 +130,7 @@ const InvoiceHeadPanel = ({ modulesManager, classes, invoice, mandatoryFieldsEmp
           <NumberInput module="invoice" label="invoice.amountTotal" displayZero value={invoice?.amountTotal} readOnly />
         </Grid>
         <Grid item xs={3} className={classes.item}>
-          <InvoiceStatusPicker label="invoice.status.label" withNull name="status" ref={register} />
+          <InvoiceStatusPicker label="invoice.status.label" withNull name="status" value={invoice?.status} onChange={(e) => setValue("status", e.target.value)} />
         </Grid>
         <Grid item xs={3} className={classes.item}>
           <TextInput module="invoice" label="invoice.note" name="note" ref={register} />
@@ -141,7 +142,7 @@ const InvoiceHeadPanel = ({ modulesManager, classes, invoice, mandatoryFieldsEmp
           <TextInput module="invoice" label="invoice.paymentReference" value={invoice?.paymentReference} readOnly />
         </Grid>
       </Grid>
-    </form>
+    </>
   );
 };
 
