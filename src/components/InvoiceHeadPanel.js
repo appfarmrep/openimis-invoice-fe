@@ -123,7 +123,6 @@ const InvoiceHeadPanel = ({ modulesManager, classes, invoice, mandatoryFieldsEmp
             label="invoice.status.label"
             value={invoice?.status}
             onChange={(v) => onChange({ ...invoice, status: v })}
-            readOnly={readOnly}
           />
         </Grid>
         <Grid item xs={3} className={classes.item}>
@@ -132,7 +131,6 @@ const InvoiceHeadPanel = ({ modulesManager, classes, invoice, mandatoryFieldsEmp
             label="invoice.note"
             value={invoice?.note}
             onChange={(v) => onChange({ ...invoice, note: v })}
-            readOnly={readOnly}
           />
         </Grid>
         <Grid item xs={3} className={classes.item}>
@@ -144,7 +142,6 @@ const InvoiceHeadPanel = ({ modulesManager, classes, invoice, mandatoryFieldsEmp
             label="invoice.paymentReference"
             value={invoice?.paymentReference}
             onChange={(v) => onChange({ ...invoice, paymentReference: v })}
-            readOnly={readOnly}
           />
         </Grid>
       </Grid>
