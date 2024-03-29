@@ -13,7 +13,7 @@ import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { withTheme, withStyles } from "@material-ui/core/styles";
 import { RIGHT_INVOICE_UPDATE, STATUS } from "../constants";
-import { fetchInvoice, deleteInvoice } from "../actions";
+import { fetchInvoice, deleteInvoice, updateInvoice } from "../actions";
 import InvoiceHeadPanel from "../components/InvoiceHeadPanel";
 import DeleteIcon from "@material-ui/icons/Delete";
 import { getEnumValue } from "../util/enum";
@@ -30,6 +30,7 @@ const InvoicePage = ({
   invoice,
   fetchInvoice,
   deleteInvoice,
+  updateInvoice,
   coreConfirm,
   confirmed,
   submittingMutation,
@@ -85,12 +86,27 @@ const InvoicePage = ({
     );
   };
 
+  const saveInvoice = (invoice) => {
+    const { status, note, paymentReference } = invoice;
+    updateInvoice(
+      { id: invoice.id, status, note, paymentReference },
+      formatMessageWithValues(intl, "invoice", "invoice.update.mutationLabel", {
+        code: invoice?.code,
+      }),
+    );
+  };
+
   const actions = [
     !!invoice &&
       getEnumValue(invoice?.status) !== STATUS.PAID && {
         doIt: openDeleteInvoiceConfirmDialog,
         icon: <DeleteIcon />,
         tooltip: formatMessage(intl, "invoice", "deleteButtonTooltip"),
+      },
+      {
+        doIt: saveInvoice,
+        icon: <SaveIcon />,
+        tooltip: formatMessage(intl, "invoice", "saveButtonTooltip"),
       },
   ];
 
@@ -130,7 +146,7 @@ const mapStateToProps = (state, props) => ({
 });
 
 const mapDispatchToProps = (dispatch) =>
-  bindActionCreators({ fetchInvoice, deleteInvoice, coreConfirm, journalize }, dispatch);
+  bindActionCreators({ fetchInvoice, deleteInvoice, updateInvoice, coreConfirm, journalize }, dispatch);
 
 export default withHistory(
   injectIntl(withTheme(withStyles(defaultPageStyles)(connect(mapStateToProps, mapDispatchToProps)(InvoicePage)))),

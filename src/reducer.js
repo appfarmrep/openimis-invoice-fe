@@ -16,6 +16,7 @@ export const ACTION_TYPE = {
   SEARCH_INVOICES: "INVOICE_INVOICES",
   GET_INVOICE: "INVOICE_INVOICE",
   DELETE_INVOICE: "INVOICE_DELETE_INVOICE",
+  UPDATE_INVOICE: "INVOICE_UPDATE_INVOICE",
   SEARCH_INVOICE_LINE_ITEMS: "INVOICE_INVOICE_LINE_ITEMS",
   SEARCH_INVOICE_PAYMENTS: "INVOICE_INVOICE_PAYMENTS",
   CREATE_INVOICE_PAYMENT: "INVOICE_CREATE_INVOICE_PAYMENT",
@@ -511,6 +512,9 @@ function reducer(
       return dispatchMutationErr(state, action);
     case SUCCESS(ACTION_TYPE.DELETE_INVOICE):
       return dispatchMutationResp(state, "deleteInvoice", action);
+    // Update
+    case SUCCESS(ACTION_TYPE.UPDATE_INVOICE):
+      return dispatchMutationResp(state, "updateInvoice", action);
     case SUCCESS(ACTION_TYPE.CREATE_INVOICE_PAYMENT):
       return dispatchMutationResp(state, "createInvoicePayment", action);
     case SUCCESS(ACTION_TYPE.UPDATE_INVOICE_PAYMENT):

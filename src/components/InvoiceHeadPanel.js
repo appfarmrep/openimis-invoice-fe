@@ -119,22 +119,33 @@ const InvoiceHeadPanel = ({ modulesManager, classes, invoice, mandatoryFieldsEmp
           <NumberInput module="invoice" label="invoice.amountTotal" displayZero value={invoice?.amountTotal} readOnly />
         </Grid>
         <Grid item xs={3} className={classes.item}>
-          <InvoiceStatusPicker label="invoice.status.label" withNull value={invoice?.status} readOnly />
+          <InvoiceStatusPicker
+            label="invoice.status.label"
+            value={invoice?.status}
+            onChange={(v) => onChange({ ...invoice, status: v })}
+            readOnly={readOnly}
+          />
         </Grid>
         <Grid item xs={3} className={classes.item}>
-          <TextInput module="invoice" label="invoice.currencyTpCode" value={invoice?.currencyTpCode} readOnly />
-        </Grid>
-        <Grid item xs={3} className={classes.item}>
-          <TextInput module="invoice" label="invoice.currencyCode" value={invoice?.currencyCode} readOnly />
-        </Grid>
-        <Grid item xs={3} className={classes.item}>
-          <TextInput module="invoice" label="invoice.note" value={invoice?.note} readOnly />
+          <TextInput
+            module="invoice"
+            label="invoice.note"
+            value={invoice?.note}
+            onChange={(v) => onChange({ ...invoice, note: v })}
+            readOnly={readOnly}
+          />
         </Grid>
         <Grid item xs={3} className={classes.item}>
           <TextInput module="invoice" label="invoice.terms" value={invoice?.terms} readOnly />
         </Grid>
         <Grid item xs={3} className={classes.item}>
-          <TextInput module="invoice" label="invoice.paymentReference" value={invoice?.paymentReference} readOnly />
+          <TextInput
+            module="invoice"
+            label="invoice.paymentReference"
+            value={invoice?.paymentReference}
+            onChange={(v) => onChange({ ...invoice, paymentReference: v })}
+            readOnly={readOnly}
+          />
         </Grid>
       </Grid>
     </>

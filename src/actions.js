@@ -1,6 +1,7 @@
 import { graphql, formatPageQuery, formatPageQueryWithCount, formatMutation } from "@openimis/fe-core";
 import { ACTION_TYPE } from "./reducer";
 import { ERROR, REQUEST, SUCCESS } from "./util/action-type";
+import { formatInvoiceGQL } from "./util/gql";
 
 const INVOICE_FULL_PROJECTION = [
   "id",
@@ -242,6 +243,22 @@ export function fetchInvoiceEvents(params) {
   const payload = formatPageQueryWithCount("invoiceEvent", params, INVOICE_EVENT_FULL_PROJECTION);
   return graphql(payload, ACTION_TYPE.SEARCH_INVOICE_EVENTS);
 }
+
+export function updateInvoice(invoice, clientMutationLabel) {
+  const mutation = formatMutation("updateInvoice", formatInvoiceGQL(invoice), clientMutationLabel);
+  const requestedDateTime = new Date();
+  return graphql(
+    mutation.payload,
+    [REQUEST(ACTION_TYPE.MUTATION), SUCCESS(ACTION_TYPE.UPDATE_INVOICE), ERROR(ACTION_TYPE.MUTATION)],
+    {
+      actionType: ACTION_TYPE.UPDATE_INVOICE,
+      clientMutationId: mutation.clientMutationId,
+      clientMutationLabel,
+      requestedDateTime,
+    },
+  );
+}
+
 
 export function deleteInvoice(invoice, clientMutationLabel) {
   const invoiceUuids = `uuids: ["${invoice?.id}"]`;
