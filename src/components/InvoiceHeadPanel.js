@@ -11,15 +11,10 @@ import InvoiceStatusPicker from "../pickers/InvoiceStatusPicker";
 import { defaultHeadPanelStyles } from "../util/styles";
 
 const InvoiceHeadPanel = ({ modulesManager, classes, invoice, mandatoryFieldsEmpty }) => {
-  const { register, handleSubmit, setValue, watch } = useForm({
-    defaultValues: {
-      status: invoice?.status,
-      note: invoice?.note
-    }
-  });
+  const { register, handleSubmit, setValue, watch } = useForm();
 
-  const status = watch("status");
-  const note = watch("note");
+  const status = watch("status", invoice?.status);
+  const note = watch("note", invoice?.note);
 
   const onSubmit = data => console.log(data);
 
