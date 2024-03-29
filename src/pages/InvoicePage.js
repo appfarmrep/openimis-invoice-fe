@@ -87,7 +87,7 @@ const InvoicePage = ({
     );
   };
 
-  const saveInvoice = (invoice) => {
+  const saveInvoice = () => {
     console.log(invoice)
     const { id, status, note, paymentReference } = invoice;
     if (id) {
