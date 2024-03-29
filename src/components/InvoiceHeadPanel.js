@@ -9,9 +9,8 @@ import { getSubjectAndThirdpartyTypePicker } from "../util/subject-and-thirdpart
 import InvoiceStatusPicker from "../pickers/InvoiceStatusPicker";
 import { defaultHeadPanelStyles } from "../util/styles";
 
-const InvoiceHeadPanel = ({ modulesManager, classes, invoice, mandatoryFieldsEmpty }) => {
+const InvoiceHeadPanel = ({ modulesManager, classes, invoice, mandatoryFieldsEmpty, onChange }) => {
   const taxAnalysisTotal = !!invoice?.taxAnalysis ? JSON.parse(invoice.taxAnalysis)?.["total"] : null;
-  const onChange = (field, value) => setEditedInvoice(prevInvoice => ({ ...prevInvoice, [field]: value }));
   return (
     <>
       <Grid container className={classes.tableTitle}>
