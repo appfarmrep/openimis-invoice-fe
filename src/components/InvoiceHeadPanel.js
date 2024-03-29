@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { useForm } from "react-hook-form";
 import { Grid, Divider, Typography, Button } from "@material-ui/core";
 import { withModulesManager, TextInput, FormattedMessage, PublishedComponent, NumberInput } from "@openimis/fe-core";
@@ -11,10 +11,12 @@ import InvoiceStatusPicker from "../pickers/InvoiceStatusPicker";
 import { defaultHeadPanelStyles } from "../util/styles";
 
 const InvoiceHeadPanel = ({ modulesManager, classes, invoice, mandatoryFieldsEmpty }) => {
-  const { register, handleSubmit, setValue, watch } = useForm();
-
-  const [status, setStatus] = useState(invoice?.status);
-  const [note, setNote] = useState(invoice?.note);
+  const { register, handleSubmit, setValue, watch, errors } = useForm({
+    defaultValues: {
+      status: invoice?.status,
+      note: invoice?.note
+    }
+  });
 
   const onSubmit = data => console.log(data);
 
@@ -127,10 +129,10 @@ const InvoiceHeadPanel = ({ modulesManager, classes, invoice, mandatoryFieldsEmp
           <NumberInput module="invoice" label="invoice.amountTotal" displayZero value={invoice?.amountTotal} readOnly />
         </Grid>
         <Grid item xs={3} className={classes.item}>
-          <InvoiceStatusPicker label="invoice.status.label" withNull value={status} onChange={setStatus} />
+          <InvoiceStatusPicker label="invoice.status.label" withNull name="status" ref={register} />
         </Grid>
         <Grid item xs={3} className={classes.item}>
-          <TextInput module="invoice" label="invoice.note" value={note} onChange={setNote} />
+          <TextInput module="invoice" label="invoice.note" name="note" ref={register} />
         </Grid>
         <Grid item xs={3} className={classes.item}>
           <TextInput module="invoice" label="invoice.terms" value={invoice?.terms} readOnly />
@@ -138,11 +140,6 @@ const InvoiceHeadPanel = ({ modulesManager, classes, invoice, mandatoryFieldsEmp
         <Grid item xs={3} className={classes.item}>
           <TextInput module="invoice" label="invoice.paymentReference" value={invoice?.paymentReference} readOnly />
         </Grid>
-      </Grid>
-      <Grid container justify="flex-end" sx={{ marginRight: '10px', marginBottom: '10px' }}>
-        <Button type="submit" variant="contained" color="primary">
-          Submit
-        </Button>
       </Grid>
     </form>
   );
