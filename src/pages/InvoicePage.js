@@ -29,9 +29,11 @@ const InvoicePage = ({
   history,
   invoiceUuid,
   invoice,
+  updatedFields,
   fetchInvoice,
   deleteInvoice,
   updateInvoice,
+  dispatch,
   coreConfirm,
   confirmed,
   submittingMutation,
@@ -88,13 +90,12 @@ const InvoicePage = ({
   };
 
   const saveInvoice = () => {
-    console.log(invoice)
-    const { id, status, note, paymentReference } = invoice;
+    const { status, note, paymentReference } = updatedFields;
     if (id) {
       updateInvoice(
         { id, status, note, paymentReference },
         formatMessageWithValues(intl, "invoice", "invoice.update.mutationLabel", {
-          code: invoice?.code,
+          code: editedInvoice?.code,
         }),
       );
     } else {
@@ -126,8 +127,9 @@ const InvoicePage = ({
           titleParams={titleParams(invoice)}
           invoice={editedInvoice}
           back={back}
+          dispatch={dispatch}
           onChange={onChange}
-          HeadPanel={InvoiceHeadPanel(onChange)}
+          HeadPanel={InvoiceHeadPanel}
           Panels={[InvoiceTabPanel]}
           rights={rights}
           actions={actions}

@@ -45,6 +45,11 @@ function reducer(
   state = {
     submittingMutation: false,
     mutation: {},
+    updatedFields: {
+      status: state.invoice?.status,
+      note: state.invoice?.note,
+      paymentReference: state.invoice?.paymentReference,
+    },
     fetchingInvoices: false,
     errorInvoices: null,
     fetchedInvoices: false,
@@ -513,6 +518,32 @@ function reducer(
     case SUCCESS(ACTION_TYPE.DELETE_INVOICE):
       return dispatchMutationResp(state, "deleteInvoice", action);
     // Update
+    case 'UPDATE_NOTE':
+      return {
+        ...state,
+        updatedFields: {
+          ...state.updatedFields,
+          note: action.payload,
+        },
+      };
+
+    case 'UPDATE_STATUS':
+      return {
+        ...state,
+        updatedFields: {
+          ...state.updatedFields,
+          status: action.payload,
+        },
+      };
+
+    case 'UPDATE_PAYMENT_REFERENCE':
+      return {
+        ...state,
+        updatedFields: {
+          ...state.updatedFields,
+          paymentReference: action.payload,
+        },
+      };
     case SUCCESS(ACTION_TYPE.UPDATE_INVOICE):
       return {
         ...state,
