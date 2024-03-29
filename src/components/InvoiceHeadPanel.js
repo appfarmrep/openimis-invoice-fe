@@ -214,7 +214,7 @@ const InvoiceHeadPanel = ({ modulesManager, classes, invoice, mandatoryFieldsEmp
             name="status"
             control={control}
             render={({ field }) => (
-              <InvoiceStatusPicker label="invoice.status.label" withNull {...field} readOnly />
+              <InvoiceStatusPicker label="invoice.status.label" withNull {...field} readOnly={false} />
             )}
           />
         </Grid>
@@ -241,7 +241,7 @@ const InvoiceHeadPanel = ({ modulesManager, classes, invoice, mandatoryFieldsEmp
             name="note"
             control={control}
             render={({ field }) => (
-              <TextInput module="invoice" label="invoice.note" {...field} readOnly />
+              <TextInput module="invoice" label="invoice.note" {...field} readOnly={false} />
             )}
           />
         </Grid>
@@ -259,7 +259,7 @@ const InvoiceHeadPanel = ({ modulesManager, classes, invoice, mandatoryFieldsEmp
             name="paymentReference"
             control={control}
             render={({ field }) => (
-              <TextInput module="invoice" label="invoice.paymentReference" {...field} readOnly />
+              <TextInput module="invoice" label="invoice.paymentReference" {...field} readOnly={false} />
             )}
           />
         </Grid>
