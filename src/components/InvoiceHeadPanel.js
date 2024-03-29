@@ -11,12 +11,15 @@ import InvoiceStatusPicker from "../pickers/InvoiceStatusPicker";
 import { defaultHeadPanelStyles } from "../util/styles";
 
 const InvoiceHeadPanel = ({ modulesManager, classes, invoice, mandatoryFieldsEmpty }) => {
-  const { register, handleSubmit, setValue } = useForm({
+  const { register, handleSubmit, setValue, watch } = useForm({
     defaultValues: {
       status: invoice?.status,
       note: invoice?.note
     }
   });
+
+  const status = watch("status");
+  const note = watch("note");
 
   const onSubmit = data => console.log(data);
 
@@ -129,16 +132,10 @@ const InvoiceHeadPanel = ({ modulesManager, classes, invoice, mandatoryFieldsEmp
           <NumberInput module="invoice" label="invoice.amountTotal" displayZero value={invoice?.amountTotal} readOnly />
         </Grid>
         <Grid item xs={3} className={classes.item}>
-          <InvoiceStatusPicker label="invoice.status.label" withNull value={invoice?.status} {...register("status")} />
+          <InvoiceStatusPicker label="invoice.status.label" withNull value={status} {...register("status")} />
         </Grid>
         <Grid item xs={3} className={classes.item}>
-          <TextInput module="invoice" label="invoice.currencyTpCode" value={invoice?.currencyTpCode} readOnly />
-        </Grid>
-        <Grid item xs={3} className={classes.item}>
-          <TextInput module="invoice" label="invoice.currencyCode" value={invoice?.currencyCode} readOnly />
-        </Grid>
-        <Grid item xs={3} className={classes.item}>
-          <TextInput module="invoice" label="invoice.note" value={invoice?.note} {...register("note")} />
+          <TextInput module="invoice" label="invoice.note" value={note} {...register("note")} />
         </Grid>
         <Grid item xs={3} className={classes.item}>
           <TextInput module="invoice" label="invoice.terms" value={invoice?.terms} readOnly />
@@ -147,9 +144,11 @@ const InvoiceHeadPanel = ({ modulesManager, classes, invoice, mandatoryFieldsEmp
           <TextInput module="invoice" label="invoice.paymentReference" value={invoice?.paymentReference} readOnly />
         </Grid>
       </Grid>
-      <Button type="submit" variant="contained" color="primary">
-        Submit
-      </Button>
+      <Grid container justify="flex-end">
+        <Button type="submit" variant="contained" color="primary">
+          Submit
+        </Button>
+      </Grid>
     </form>
   );
 };
