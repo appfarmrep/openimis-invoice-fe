@@ -10,7 +10,7 @@ import InvoiceStatusPicker from "../pickers/InvoiceStatusPicker";
 import { defaultHeadPanelStyles } from "../util/styles";
 
 const InvoiceHeadPanel = ({ modulesManager, classes, invoice, mandatoryFieldsEmpty }) => {
-  const [invoiceStatus, setInvoiceStatus] = useState(invoice?.status);
+  const [invoiceStatus, setInvoiceStatus] = const [first, setfirst] = useState(second)(invoice?.status);
   const taxAnalysisTotal = !!invoice?.taxAnalysis ? JSON.parse(invoice.taxAnalysis)?.["total"] : null;
 
   const handleStatusChange = (v) => {
