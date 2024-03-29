@@ -1,6 +1,5 @@
 import React from "react";
-import { useForm } from "react-hook-form";
-import { Grid, Divider, Typography, Button } from "@material-ui/core";
+import { Grid, Divider, Typography } from "@material-ui/core";
 import { withModulesManager, TextInput, FormattedMessage, PublishedComponent, NumberInput } from "@openimis/fe-core";
 import { injectIntl } from "react-intl";
 import { withTheme, withStyles } from "@material-ui/core/styles";
@@ -11,16 +10,6 @@ import InvoiceStatusPicker from "../pickers/InvoiceStatusPicker";
 import { defaultHeadPanelStyles } from "../util/styles";
 
 const InvoiceHeadPanel = ({ modulesManager, classes, invoice, mandatoryFieldsEmpty }) => {
-  const { register, handleSubmit, setValue, watch, errors } = useForm({
-    defaultValues: {
-      status: invoice?.status,
-      note: invoice?.note
-    }
-  });
-
-  // Register the status field
-  register({ name: 'status' });
-
   const taxAnalysisTotal = !!invoice?.taxAnalysis ? JSON.parse(invoice.taxAnalysis)?.["total"] : null;
   return (
     <>
@@ -130,10 +119,16 @@ const InvoiceHeadPanel = ({ modulesManager, classes, invoice, mandatoryFieldsEmp
           <NumberInput module="invoice" label="invoice.amountTotal" displayZero value={invoice?.amountTotal} readOnly />
         </Grid>
         <Grid item xs={3} className={classes.item}>
-          <InvoiceStatusPicker label="invoice.status.label" withNull name="status" value={invoice?.status} onChange={(e) => setValue("status", e.target.value)} />
+          <InvoiceStatusPicker label="invoice.status.label" withNull value={invoice?.status} readOnly />
         </Grid>
         <Grid item xs={3} className={classes.item}>
-          <TextInput module="invoice" label="invoice.note" name="note" ref={register} />
+          <TextInput module="invoice" label="invoice.currencyTpCode" value={invoice?.currencyTpCode} readOnly />
+        </Grid>
+        <Grid item xs={3} className={classes.item}>
+          <TextInput module="invoice" label="invoice.currencyCode" value={invoice?.currencyCode} readOnly />
+        </Grid>
+        <Grid item xs={3} className={classes.item}>
+          <TextInput module="invoice" label="invoice.note" value={invoice?.note} readOnly />
         </Grid>
         <Grid item xs={3} className={classes.item}>
           <TextInput module="invoice" label="invoice.terms" value={invoice?.terms} readOnly />
