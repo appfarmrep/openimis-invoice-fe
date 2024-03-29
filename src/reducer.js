@@ -514,7 +514,14 @@ function reducer(
       return dispatchMutationResp(state, "deleteInvoice", action);
     // Update
     case SUCCESS(ACTION_TYPE.UPDATE_INVOICE):
-      return dispatchMutationResp(state, "updateInvoice", action);
+      return {
+        ...state,
+        invoice: {
+          ...state.invoice,
+          ...action.payload.data.updateInvoice,
+          id: decodeId(action.payload.data.updateInvoice.id),
+        },
+      };
     case SUCCESS(ACTION_TYPE.CREATE_INVOICE_PAYMENT):
       return dispatchMutationResp(state, "createInvoicePayment", action);
     case SUCCESS(ACTION_TYPE.UPDATE_INVOICE_PAYMENT):

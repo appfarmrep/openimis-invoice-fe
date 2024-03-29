@@ -88,13 +88,17 @@ const InvoicePage = ({
   };
 
   const saveInvoice = (invoice) => {
-    const { status, note, paymentReference } = invoice;
-    updateInvoice(
-      { id: invoice.id, status, note, paymentReference },
-      formatMessageWithValues(intl, "invoice", "invoice.update.mutationLabel", {
-        code: invoice?.code,
-      }),
-    );
+    const { id, status, note, paymentReference } = invoice;
+    if (id) {
+      updateInvoice(
+        { id, status, note, paymentReference },
+        formatMessageWithValues(intl, "invoice", "invoice.update.mutationLabel", {
+          code: invoice?.code,
+        }),
+      );
+    } else {
+      // Handle the case where invoice.id is null or undefined
+    }
   };
 
   const actions = [
