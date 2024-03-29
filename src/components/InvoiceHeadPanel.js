@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Grid, Divider, Typography, Button } from "@material-ui/core";
 import { withModulesManager, TextInput, FormattedMessage, PublishedComponent, NumberInput } from "@openimis/fe-core";
@@ -13,8 +13,8 @@ import { defaultHeadPanelStyles } from "../util/styles";
 const InvoiceHeadPanel = ({ modulesManager, classes, invoice, mandatoryFieldsEmpty }) => {
   const { register, handleSubmit, setValue, watch } = useForm();
 
-  const status = watch("status", invoice?.status);
-  const note = watch("note", invoice?.note);
+  const [status, setStatus] = useState(invoice?.status);
+  const [note, setNote] = useState(invoice?.note);
 
   const onSubmit = data => console.log(data);
 
@@ -127,10 +127,10 @@ const InvoiceHeadPanel = ({ modulesManager, classes, invoice, mandatoryFieldsEmp
           <NumberInput module="invoice" label="invoice.amountTotal" displayZero value={invoice?.amountTotal} readOnly />
         </Grid>
         <Grid item xs={3} className={classes.item}>
-          <InvoiceStatusPicker label="invoice.status.label" withNull value={status} {...register("status")} />
+          <InvoiceStatusPicker label="invoice.status.label" withNull value={status} onChange={setStatus} />
         </Grid>
         <Grid item xs={3} className={classes.item}>
-          <TextInput module="invoice" label="invoice.note" value={note} {...register("note")} />
+          <TextInput module="invoice" label="invoice.note" value={note} onChange={setNote} />
         </Grid>
         <Grid item xs={3} className={classes.item}>
           <TextInput module="invoice" label="invoice.terms" value={invoice?.terms} readOnly />
@@ -139,7 +139,7 @@ const InvoiceHeadPanel = ({ modulesManager, classes, invoice, mandatoryFieldsEmp
           <TextInput module="invoice" label="invoice.paymentReference" value={invoice?.paymentReference} readOnly />
         </Grid>
       </Grid>
-      <Grid container justify="flex-end">
+      <Grid container justify="flex-end" style={{ padding: '10px', margin: '10px' }}>
         <Button type="submit" variant="contained" color="primary">
           Submit
         </Button>
