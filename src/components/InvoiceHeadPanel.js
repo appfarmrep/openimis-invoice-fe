@@ -139,7 +139,7 @@ const InvoiceHeadPanel = ({ modulesManager, classes, invoice, mandatoryFieldsEmp
           <TextInput module="invoice" label="invoice.paymentReference" value={invoice?.paymentReference} readOnly />
         </Grid>
       </Grid>
-      <Grid container justify="flex-end" style={{ padding: '10px', margin: '10px' }}>
+      <Grid container justify="flex-end" sx={{ marginRight: '10px', marginBottom: '10px' }}>
         <Button type="submit" variant="contained" color="primary">
           Submit
         </Button>
