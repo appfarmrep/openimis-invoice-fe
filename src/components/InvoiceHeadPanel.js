@@ -1,4 +1,5 @@
 import React from "react";
+import { useForm, Controller } from "react-hook-form";
 import { Grid, Divider, Typography } from "@material-ui/core";
 import { withModulesManager, TextInput, FormattedMessage, PublishedComponent, NumberInput } from "@openimis/fe-core";
 import { injectIntl } from "react-intl";
@@ -9,8 +10,14 @@ import { getSubjectAndThirdpartyTypePicker } from "../util/subject-and-thirdpart
 import InvoiceStatusPicker from "../pickers/InvoiceStatusPicker";
 import { defaultHeadPanelStyles } from "../util/styles";
 
-const InvoiceHeadPanel = ({onInvoiceChange, modulesManager, classes, invoice, mandatoryFieldsEmpty }) => {
-  const taxAnalysisTotal = !!invoice?.taxAnalysis ? JSON.parse(invoice.taxAnalysis)?.["total"] : null;
+const InvoiceHeadPanel = ({ modulesManager, classes, invoice, mandatoryFieldsEmpty }) => {
+  const { control } = useForm({
+    defaultValues: {
+      ...invoice,
+      taxAnalysisTotal: !!invoice?.taxAnalysis ? JSON.parse(invoice.taxAnalysis)?.["total"] : null,
+    }
+  });
+
   return (
     <>
       <Grid container className={classes.tableTitle}>
@@ -35,123 +42,225 @@ const InvoiceHeadPanel = ({onInvoiceChange, modulesManager, classes, invoice, ma
       )}
       <Grid container className={classes.item}>
         <Grid item xs={3} className={classes.item}>
-          <SubjectTypePicker label="invoice.subject" withNull value={invoice?.subjectTypeName} readOnly />
+          <Controller
+            name="subjectTypeName"
+            control={control}
+            render={({ field }) => (
+              <SubjectTypePicker label="invoice.subject" withNull {...field} readOnly />
+            )}
+          />
         </Grid>
         <Grid item xs={3} className={classes.item}>
           {getSubjectAndThirdpartyTypePicker(modulesManager, invoice?.subjectTypeName, invoice?.subject)}
         </Grid>
         <Grid item xs={3} className={classes.item}>
-          <ThirdpartyTypePicker label="invoice.thirdparty" withNull value={invoice?.thirdpartyTypeName} readOnly />
+          <Controller
+            name="thirdpartyTypeName"
+            control={control}
+            render={({ field }) => (
+              <ThirdpartyTypePicker label="invoice.thirdparty" withNull {...field} readOnly />
+            )}
+          />
         </Grid>
         <Grid item xs={3} className={classes.item}>
           {getSubjectAndThirdpartyTypePicker(modulesManager, invoice?.thirdpartyTypeName, invoice?.thirdparty)}
         </Grid>
         <Grid item xs={3} className={classes.item}>
-          <TextInput module="invoice" label="invoice.code" value={invoice?.code} readOnly />
-        </Grid>
-        <Grid item xs={3} className={classes.item}>
-          <TextInput module="invoice" label="invoice.codeTp" value={invoice?.codeTp} readOnly />
-        </Grid>
-        <Grid item xs={3} className={classes.item}>
-          <TextInput module="invoice" label="invoice.codeExt" value={invoice?.codeExt} readOnly />
-        </Grid>
-        <Grid item xs={3} className={classes.item}>
-          <PublishedComponent
-            pubRef="core.DatePicker"
-            module="invoice"
-            label="invoice.dateDue"
-            value={invoice?.dateDue}
-            readOnly
+          <Controller
+            name="code"
+            control={control}
+            render={({ field }) => (
+              <TextInput module="invoice" label="invoice.code" {...field} readOnly />
+            )}
           />
         </Grid>
         <Grid item xs={3} className={classes.item}>
-          <PublishedComponent
-            pubRef="core.DatePicker"
-            module="invoice"
-            label="invoice.dateInvoice"
-            value={invoice?.dateInvoice}
-            readOnly
+          <Controller
+            name="codeTp"
+            control={control}
+            render={({ field }) => (
+              <TextInput module="invoice" label="invoice.codeTp" {...field} readOnly />
+            )}
           />
         </Grid>
         <Grid item xs={3} className={classes.item}>
-          <PublishedComponent
-            pubRef="core.DatePicker"
-            module="invoice"
-            label="invoice.dateValidFrom"
-            value={invoice?.dateValidFrom}
-            readOnly
+          <Controller
+            name="codeExt"
+            control={control}
+            render={({ field }) => (
+              <TextInput module="invoice" label="invoice.codeExt" {...field} readOnly />
+            )}
           />
         </Grid>
         <Grid item xs={3} className={classes.item}>
-          <PublishedComponent
-            pubRef="core.DatePicker"
-            module="invoice"
-            label="invoice.dateValidTo"
-            value={invoice?.dateValidTo}
-            readOnly
+          <Controller
+            name="dateDue"
+            control={control}
+            render={({ field }) => (
+              <PublishedComponent
+                pubRef="core.DatePicker"
+                module="invoice"
+                label="invoice.dateDue"
+                {...field}
+                readOnly
+              />
+            )}
           />
         </Grid>
         <Grid item xs={3} className={classes.item}>
-          <PublishedComponent
-            pubRef="core.DatePicker"
-            module="invoice"
-            label="invoice.datePayed"
-            value={invoice?.datePayed}
-            readOnly
+          <Controller
+            name="dateInvoice"
+            control={control}
+            render={({ field }) => (
+              <PublishedComponent
+                pubRef="core.DatePicker"
+                module="invoice"
+                label="invoice.dateInvoice"
+                {...field}
+                readOnly
+              />
+            )}
           />
         </Grid>
         <Grid item xs={3} className={classes.item}>
-          <NumberInput
-            module="invoice"
-            label="invoice.amountDiscount"
-            displayZero
-            value={invoice?.amountDiscount}
-            readOnly
+          <Controller
+            name="dateValidFrom"
+            control={control}
+            render={({ field }) => (
+              <PublishedComponent
+                pubRef="core.DatePicker"
+                module="invoice"
+                label="invoice.dateValidFrom"
+                {...field}
+                readOnly
+              />
+            )}
           />
         </Grid>
         <Grid item xs={3} className={classes.item}>
-          <NumberInput module="invoice" label="invoice.amountNet" displayZero value={invoice?.amountNet} readOnly />
-        </Grid>
-        <Grid item xs={3} className={classes.item}>
-          <TextInput module="invoice" label="invoice.taxAnalysis" value={taxAnalysisTotal} readOnly />
-        </Grid>
-        <Grid item xs={3} className={classes.item}>
-          <NumberInput module="invoice" label="invoice.amountTotal" displayZero value={invoice?.amountTotal} readOnly />
-        </Grid>
-        <Grid item xs={3} className={classes.item}>
-          <InvoiceStatusPicker
-            label="invoice.status.label"
-            withNull
-            value={invoice?.status}
-            readOnly={false}
-            onChange={(v) => onInvoiceChange('status', v)}
+          <Controller
+            name="dateValidTo"
+            control={control}
+            render={({ field }) => (
+              <PublishedComponent
+                pubRef="core.DatePicker"
+                module="invoice"
+                label="invoice.dateValidTo"
+                {...field}
+                readOnly
+              />
+            )}
           />
         </Grid>
         <Grid item xs={3} className={classes.item}>
-          <TextInput module="invoice" label="invoice.currencyTpCode" value={invoice?.currencyTpCode} readOnly />
-        </Grid>
-        <Grid item xs={3} className={classes.item}>
-          <TextInput module="invoice" label="invoice.currencyCode" value={invoice?.currencyCode} readOnly />
-        </Grid>
-        <Grid item xs={3} className={classes.item}>
-          <TextInput
-            module="invoice"
-            label="invoice.note"
-            value={invoice?.note}
-            readOnly={false}
-            onChange={(v) => onInvoiceChange('note', v)}
+          <Controller
+            name="datePayed"
+            control={control}
+            render={({ field }) => (
+              <PublishedComponent
+                pubRef="core.DatePicker"
+                module="invoice"
+                label="invoice.datePayed"
+                {...field}
+                readOnly
+              />
+            )}
           />
         </Grid>
         <Grid item xs={3} className={classes.item}>
-          <TextInput module="invoice" label="invoice.terms" value={invoice?.terms} readOnly />
+          <Controller
+            name="amountDiscount"
+            control={control}
+            render={({ field }) => (
+              <NumberInput
+                module="invoice"
+                label="invoice.amountDiscount"
+                displayZero
+                {...field}
+                readOnly
+              />
+            )}
+          />
         </Grid>
         <Grid item xs={3} className={classes.item}>
-          <TextInput
-            module="invoice"
-            label="invoice.paymentReference"
-            value={invoice?.paymentReference}
-            readOnly={false}
-            onChange={(v) => onInvoiceChange('paymentReference', v)}
+          <Controller
+            name="amountNet"
+            control={control}
+            render={({ field }) => (
+              <NumberInput module="invoice" label="invoice.amountNet" displayZero {...field} readOnly />
+            )}
+          />
+        </Grid>
+        <Grid item xs={3} className={classes.item}>
+          <Controller
+            name="taxAnalysisTotal"
+            control={control}
+            render={({ field }) => (
+              <TextInput module="invoice" label="invoice.taxAnalysis" {...field} readOnly />
+            )}
+          />
+        </Grid>
+        <Grid item xs={3} className={classes.item}>
+          <Controller
+            name="amountTotal"
+            control={control}
+            render={({ field }) => (
+              <NumberInput module="invoice" label="invoice.amountTotal" displayZero {...field} readOnly />
+            )}
+          />
+        </Grid>
+        <Grid item xs={3} className={classes.item}>
+          <Controller
+            name="status"
+            control={control}
+            render={({ field }) => (
+              <InvoiceStatusPicker label="invoice.status.label" withNull {...field} readOnly />
+            )}
+          />
+        </Grid>
+        <Grid item xs={3} className={classes.item}>
+          <Controller
+            name="currencyTpCode"
+            control={control}
+            render={({ field }) => (
+              <TextInput module="invoice" label="invoice.currencyTpCode" {...field} readOnly />
+            )}
+          />
+        </Grid>
+        <Grid item xs={3} className={classes.item}>
+          <Controller
+            name="currencyCode"
+            control={control}
+            render={({ field }) => (
+              <TextInput module="invoice" label="invoice.currencyCode" {...field} readOnly />
+            )}
+          />
+        </Grid>
+        <Grid item xs={3} className={classes.item}>
+          <Controller
+            name="note"
+            control={control}
+            render={({ field }) => (
+              <TextInput module="invoice" label="invoice.note" {...field} readOnly />
+            )}
+          />
+        </Grid>
+        <Grid item xs={3} className={classes.item}>
+          <Controller
+            name="terms"
+            control={control}
+            render={({ field }) => (
+              <TextInput module="invoice" label="invoice.terms" {...field} readOnly />
+            )}
+          />
+        </Grid>
+        <Grid item xs={3} className={classes.item}>
+          <Controller
+            name="paymentReference"
+            control={control}
+            render={({ field }) => (
+              <TextInput module="invoice" label="invoice.paymentReference" {...field} readOnly />
+            )}
           />
         </Grid>
       </Grid>

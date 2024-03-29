@@ -38,7 +38,6 @@ export const ACTION_TYPE = {
   SEARCH_DETAIL_PAYMENT_INVOICE: "PAYMENTINVOICE__DETAIL_PAYMENT_INVOICE",
   CREATE_PAYMENT_INVOICE_WITH_DETAIL: "PAYMENTINVOICE_CREATE_PAYMENT_INVOICE_WITH_DETAIL",
   DELETE_PAYMENT_INVOICE: "PAYMENTINVOICE_DELETE_PAYMENT_INVOICE",
-  UPDATE_INVOICE: "UPDATE_INVOICE",
 };
 
 function reducer(
@@ -510,20 +509,6 @@ function reducer(
       return dispatchMutationReq(state, action);
     case ERROR(ACTION_TYPE.MUTATION):
       return dispatchMutationErr(state, action);
-    case SUCCESS(ACTION_TYPE.UPDATE_INVOICE):
-      return dispatchMutationResp(state, "updateInvoice", action);
-    case REQUEST(ACTION_TYPE.UPDATE_INVOICE):
-      return {
-        ...state,
-        submittingMutation: true,
-        errorInvoice: null,
-      };
-    case ERROR(ACTION_TYPE.UPDATE_INVOICE):
-      return {
-        ...state,
-        submittingMutation: false,
-        errorInvoice: formatServerError(action.payload),
-      };
     case SUCCESS(ACTION_TYPE.DELETE_INVOICE):
       return dispatchMutationResp(state, "deleteInvoice", action);
     case SUCCESS(ACTION_TYPE.CREATE_INVOICE_PAYMENT):

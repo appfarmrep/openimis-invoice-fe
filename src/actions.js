@@ -242,32 +242,6 @@ export function fetchInvoiceEvents(params) {
   const payload = formatPageQueryWithCount("invoiceEvent", params, INVOICE_EVENT_FULL_PROJECTION);
   return graphql(payload, ACTION_TYPE.SEARCH_INVOICE_EVENTS);
 }
-function formatInvoiceGQL(invoice) {
-  return `{
-    id: "${invoice.id}",
-    status: "${invoice.status}",
-    note: "${invoice.note}",
-    paymentReference: "${invoice.paymentReference}"
-  }`;
-}
-export function updateInvoice(invoice, clientMutationLabel) {
-  const mutation = formatMutation(
-    "updateInvoice", 
-    formatInvoiceGQL(invoice), 
-    clientMutationLabel
-  );
-  const requestedDateTime = new Date();
-  return graphql(
-    mutation.payload,
-    [REQUEST(ACTION_TYPE.MUTATION), SUCCESS(ACTION_TYPE.UPDATE_INVOICE), ERROR(ACTION_TYPE.MUTATION)],
-    {
-      actionType: ACTION_TYPE.UPDATE_INVOICE,
-      clientMutationId: mutation.clientMutationId,
-      clientMutationLabel,
-      requestedDateTime,
-    },
-  );
-}
 
 export function deleteInvoice(invoice, clientMutationLabel) {
   const invoiceUuids = `uuids: ["${invoice?.id}"]`;
