@@ -10,7 +10,14 @@ import InvoiceStatusPicker from "../pickers/InvoiceStatusPicker";
 import { defaultHeadPanelStyles } from "../util/styles";
 
 const InvoiceHeadPanel = ({ modulesManager, classes, invoice, mandatoryFieldsEmpty }) => {
+  const [invoiceStatus, setInvoiceStatus] = useState(invoice?.status);
   const taxAnalysisTotal = !!invoice?.taxAnalysis ? JSON.parse(invoice.taxAnalysis)?.["total"] : null;
+
+  const handleStatusChange = (v) => {
+    setInvoiceStatus(v);
+    onChange({ ...invoice, status: v });
+  };
+
   return (
     <>
       <Grid container className={classes.tableTitle}>
@@ -121,8 +128,8 @@ const InvoiceHeadPanel = ({ modulesManager, classes, invoice, mandatoryFieldsEmp
         <Grid item xs={3} className={classes.item}>
           <InvoiceStatusPicker
             label="invoice.status.label"
-            value={invoice?.status}
-            onChange={(v) => onChange({ ...invoice, status: v })}
+            value={invoiceStatus}
+            onChange={handleStatusChange}
           />
         </Grid>
         <Grid item xs={3} className={classes.item}>
@@ -150,3 +157,4 @@ const InvoiceHeadPanel = ({ modulesManager, classes, invoice, mandatoryFieldsEmp
 };
 
 export default withModulesManager(injectIntl(withTheme(withStyles(defaultHeadPanelStyles)(InvoiceHeadPanel))));
+
