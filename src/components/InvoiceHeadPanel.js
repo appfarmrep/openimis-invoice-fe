@@ -8,8 +8,10 @@ import ThirdpartyTypePicker from "../pickers/ThirdpartyTypePicker";
 import { getSubjectAndThirdpartyTypePicker } from "../util/subject-and-thirdparty-picker";
 import InvoiceStatusPicker from "../pickers/InvoiceStatusPicker";
 import { defaultHeadPanelStyles } from "../util/styles";
+import { connect } from 'react-redux';
 
-const InvoiceHeadPanel = ({ modulesManager, classes, invoice, mandatoryFieldsEmpty }) => {
+
+const InvoiceHeadPanel = ({dispatch, modulesManager, classes, invoice, mandatoryFieldsEmpty }) => {
   const taxAnalysisTotal = !!invoice?.taxAnalysis ? JSON.parse(invoice.taxAnalysis)?.["total"] : null;
   return (
     <>
@@ -149,4 +151,4 @@ const InvoiceHeadPanel = ({ modulesManager, classes, invoice, mandatoryFieldsEmp
   );
 };
 
-export default withModulesManager(injectIntl(withTheme(withStyles(defaultHeadPanelStyles)(InvoiceHeadPanel))));
+export default connect()(withModulesManager(injectIntl(withTheme(withStyles(defaultHeadPanelStyles)(InvoiceHeadPanel)))));
