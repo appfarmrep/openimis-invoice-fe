@@ -89,6 +89,7 @@ const InvoicePage = ({
   };
 
   const saveInvoice = (invoice) => {
+    console.log(invoiceUuid)
     const status = localStorage.getItem('invoiceStatus') || invoice.status;
     const note = localStorage.getItem('invoiceNote') || invoice.note;
     const paymentReference = localStorage.getItem('invoicePaymentReference') || invoice.paymentReference;
