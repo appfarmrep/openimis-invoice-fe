@@ -88,12 +88,13 @@ const InvoicePage = ({
   };
 
   const saveInvoice = () => {
-    const { id, status, note, paymentReference } = editedInvoice;
+    console.log(invoice)
+    const { id, status, note, paymentReference } = invoice;
     if (id) {
       updateInvoice(
         { id, status, note, paymentReference },
         formatMessageWithValues(intl, "invoice", "invoice.update.mutationLabel", {
-          code: editedInvoice?.code,
+          code: invoice?.code,
         }),
       );
     } else {
