@@ -87,9 +87,15 @@ const InvoicePage = ({
     );
   };
 
+  const [editedFields, setEditedFields] = useState({
+    status: invoice?.status,
+    note: invoice?.note,
+    paymentReference: invoice?.paymentReference,
+  });
+
   const saveInvoice = () => {
-    console.log(invoice)
-    const { id, status, note, paymentReference } = invoice;
+    const { id } = invoice;
+    const { status, note, paymentReference } = editedFields;
     if (id) {
       updateInvoice(
         { id, status, note, paymentReference },
@@ -98,7 +104,7 @@ const InvoicePage = ({
         }),
       );
     } else {
-      // Handle the case where invoice.id is null or undefined
+      console.log(editedFields)
     }
   };
 
@@ -132,6 +138,8 @@ const InvoicePage = ({
           rights={rights}
           actions={actions}
           setConfirmedAction={setConfirmedAction}
+          editedFields={editedFields}
+  setEditedFields={setEditedFields}
         />
       </div>
     )

@@ -121,16 +121,16 @@ const InvoiceHeadPanel = ({ modulesManager, classes, invoice, mandatoryFieldsEmp
         <Grid item xs={3} className={classes.item}>
           <InvoiceStatusPicker
             label="invoice.status.label"
-            value={invoice?.status}
-            onChange={(v) => onChange({ ...invoice, status: v })}
+            value={editedFields.status}
+  onChange={(v) => setEditedFields({ ...editedFields, status: v })}
           />
         </Grid>
         <Grid item xs={3} className={classes.item}>
           <TextInput
             module="invoice"
             label="invoice.note"
-            value={invoice?.note}
-            onChange={(v) => onChange({ ...invoice, note: v })}
+            value={editedFields.note}
+  onChange={(v) => setEditedFields({ ...editedFields, note: v })}
           />
         </Grid>
         <Grid item xs={3} className={classes.item}>
@@ -140,8 +140,8 @@ const InvoiceHeadPanel = ({ modulesManager, classes, invoice, mandatoryFieldsEmp
           <TextInput
             module="invoice"
             label="invoice.paymentReference"
-            value={invoice?.paymentReference}
-            onChange={(v) => onChange({ ...invoice, paymentReference: v })}
+            value={editedFields.paymentReference}
+  onChange={(v) => setEditedFields({ ...editedFields, paymentReference: v })}
           />
         </Grid>
       </Grid>
