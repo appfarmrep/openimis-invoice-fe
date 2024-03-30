@@ -8,12 +8,9 @@ import ThirdpartyTypePicker from "../pickers/ThirdpartyTypePicker";
 import { getSubjectAndThirdpartyTypePicker } from "../util/subject-and-thirdparty-picker";
 import InvoiceStatusPicker from "../pickers/InvoiceStatusPicker";
 import { defaultHeadPanelStyles } from "../util/styles";
-import { useDispatch } from 'react-redux';
-
 
 const InvoiceHeadPanel = ({ modulesManager, classes, invoice, mandatoryFieldsEmpty }) => {
   const taxAnalysisTotal = !!invoice?.taxAnalysis ? JSON.parse(invoice.taxAnalysis)?.["total"] : null;
-  const dispatch = useDispatch();
   return (
     <>
       <Grid container className={classes.tableTitle}>
