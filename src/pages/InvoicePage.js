@@ -129,7 +129,7 @@ const InvoicePage = ({
           back={back}
           dispatch={dispatch}
           onChange={onChange}
-          HeadPanel={InvoiceHeadPanel}
+          HeadPanel={(props) => <InvoiceHeadPanel {...props} dispatch={dispatch} />}
           Panels={[InvoiceTabPanel]}
           rights={rights}
           actions={actions}
