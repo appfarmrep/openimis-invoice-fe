@@ -22,6 +22,7 @@ import InvoiceTabPanel from "../components/InvoiceTabPanel";
 import { ACTION_TYPE } from "../reducer";
 import { defaultPageStyles } from "../util/styles";
 
+
 const InvoicePage = ({
   intl,
   classes,
@@ -87,25 +88,16 @@ const InvoicePage = ({
     );
   };
 
-  const [editedFields, setEditedFields] = useState({
-    status: invoice?.status,
-    note: invoice?.note,
-    paymentReference: invoice?.paymentReference,
-  });
-
-  const saveInvoice = () => {
-    const { id } = invoice;
-    const { status, note, paymentReference } = editedFields;
-    if (id) {
-      updateInvoice(
-        { id, status, note, paymentReference },
-        formatMessageWithValues(intl, "invoice", "invoice.update.mutationLabel", {
-          code: invoice?.code,
-        }),
-      );
-    } else {
-      console.log(editedFields)
-    }
+  const saveInvoice = (invoice) => {
+    const status = localStorage.getItem('invoiceStatus') || invoice.status;
+    const note = localStorage.getItem('invoiceNote') || invoice.note;
+    const paymentReference = localStorage.getItem('invoicePaymentReference') || invoice.paymentReference;
+    updateInvoice(
+      { id: invoice.id, status, note, paymentReference },
+      formatMessageWithValues(intl, "invoice", "invoice.update.mutationLabel", {
+        code: invoice?.code,
+      }),
+    );
   };
 
   const actions = [
@@ -138,8 +130,6 @@ const InvoicePage = ({
           rights={rights}
           actions={actions}
           setConfirmedAction={setConfirmedAction}
-          editedFields={editedFields}
-  setEditedFields={setEditedFields}
         />
       </div>
     )

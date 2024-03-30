@@ -9,8 +9,36 @@ import { getSubjectAndThirdpartyTypePicker } from "../util/subject-and-thirdpart
 import InvoiceStatusPicker from "../pickers/InvoiceStatusPicker";
 import { defaultHeadPanelStyles } from "../util/styles";
 
-const InvoiceHeadPanel = ({ modulesManager, classes, invoice, mandatoryFieldsEmpty, setEditedFields, editedFields }) => {
+const InvoiceHeadPanel = ({ modulesManager, classes, invoice, mandatoryFieldsEmpty, onChange }) => {
   const taxAnalysisTotal = !!invoice?.taxAnalysis ? JSON.parse(invoice.taxAnalysis)?.["total"] : null;
+
+  const [status, setStatus] = useState(invoice?.status);
+  const [note, setNote] = useState(invoice?.note);
+  const [paymentReference, setPaymentReference] = useState(invoice?.paymentReference);
+
+  useEffect(() => {
+    setStatus(invoice?.status);
+    setNote(invoice?.note);
+    setPaymentReference(invoice?.paymentReference);
+  }, [invoice]);
+
+  const handleStatusChange = (v) => {
+    setStatus(v);
+    localStorage.setItem('invoiceStatus', v);
+    onChange({ ...invoice, status: v });
+  };
+
+  const handleNoteChange = (v) => {
+    setNote(v);
+    localStorage.setItem('invoiceNote', v);
+    onChange({ ...invoice, note: v });
+  };
+
+  const handlePaymentReferenceChange = (v) => {
+    setPaymentReference(v);
+    localStorage.setItem('invoicePaymentReference', v);
+    onChange({ ...invoice, paymentReference: v });
+  };
   return (
     <>
       <Grid container className={classes.tableTitle}>
@@ -121,16 +149,16 @@ const InvoiceHeadPanel = ({ modulesManager, classes, invoice, mandatoryFieldsEmp
         <Grid item xs={3} className={classes.item}>
           <InvoiceStatusPicker
             label="invoice.status.label"
-            value={editedFields.status}
-  onChange={(v) => setEditedFields({ ...editedFields, status: v })}
+            value={status}
+            onChange={handleStatusChange}
           />
         </Grid>
         <Grid item xs={3} className={classes.item}>
           <TextInput
             module="invoice"
             label="invoice.note"
-            value={editedFields.note}
-  onChange={(v) => setEditedFields({ ...editedFields, note: v })}
+            value={note}
+            onChange={handleNoteChange}
           />
         </Grid>
         <Grid item xs={3} className={classes.item}>
@@ -140,8 +168,8 @@ const InvoiceHeadPanel = ({ modulesManager, classes, invoice, mandatoryFieldsEmp
           <TextInput
             module="invoice"
             label="invoice.paymentReference"
-            value={editedFields.paymentReference}
-  onChange={(v) => setEditedFields({ ...editedFields, paymentReference: v })}
+            value={paymentReference}
+            onChange={handlePaymentReferenceChange}
           />
         </Grid>
       </Grid>
