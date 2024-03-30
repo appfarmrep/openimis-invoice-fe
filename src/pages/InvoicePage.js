@@ -93,7 +93,7 @@ const InvoicePage = ({
     const note = localStorage.getItem('invoiceNote') || invoice.note;
     const paymentReference = localStorage.getItem('invoicePaymentReference') || invoice.paymentReference;
     updateInvoice(
-      { id: invoice.id, status, note, paymentReference },
+      { id: invoiceUuid, status, note, paymentReference },
       formatMessageWithValues(intl, "invoice", "invoice.update.mutationLabel", {
         code: invoice?.code,
       }),
