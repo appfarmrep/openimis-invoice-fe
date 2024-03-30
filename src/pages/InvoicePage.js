@@ -29,11 +29,9 @@ const InvoicePage = ({
   history,
   invoiceUuid,
   invoice,
-  updatedFields,
   fetchInvoice,
   deleteInvoice,
   updateInvoice,
-  dispatch,
   coreConfirm,
   confirmed,
   submittingMutation,
@@ -90,7 +88,7 @@ const InvoicePage = ({
   };
 
   const saveInvoice = () => {
-    const { status, note, paymentReference } = updatedFields;
+    const { id, status, note, paymentReference } = editedInvoice;
     if (id) {
       updateInvoice(
         { id, status, note, paymentReference },
@@ -127,9 +125,8 @@ const InvoicePage = ({
           titleParams={titleParams(invoice)}
           invoice={editedInvoice}
           back={back}
-          dispatch={dispatch}
           onChange={onChange}
-          HeadPanel={(props) => <InvoiceHeadPanel {...props} dispatch={dispatch} />}
+          HeadPanel={InvoiceHeadPanel}
           Panels={[InvoiceTabPanel]}
           rights={rights}
           actions={actions}

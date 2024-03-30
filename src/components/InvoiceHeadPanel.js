@@ -9,7 +9,7 @@ import { getSubjectAndThirdpartyTypePicker } from "../util/subject-and-thirdpart
 import InvoiceStatusPicker from "../pickers/InvoiceStatusPicker";
 import { defaultHeadPanelStyles } from "../util/styles";
 
-const InvoiceHeadPanel = ({ modulesManager, classes, invoice, mandatoryFieldsEmpty, dispatch }) => {
+const InvoiceHeadPanel = ({ modulesManager, classes, invoice, mandatoryFieldsEmpty, onChange }) => {
   const taxAnalysisTotal = !!invoice?.taxAnalysis ? JSON.parse(invoice.taxAnalysis)?.["total"] : null;
   return (
     <>
@@ -121,8 +121,8 @@ const InvoiceHeadPanel = ({ modulesManager, classes, invoice, mandatoryFieldsEmp
         <Grid item xs={3} className={classes.item}>
           <InvoiceStatusPicker
             label="invoice.status.label"
-            value={invoice?.status}
-            onChange={(v) => dispatch({ type: 'UPDATE_STATUS', payload: v })}
+            value={invoice.status}
+            onChange={(v) => onChange({ ...invoice, status: v })}
           />
         </Grid>
         <Grid item xs={3} className={classes.item}>
@@ -130,7 +130,7 @@ const InvoiceHeadPanel = ({ modulesManager, classes, invoice, mandatoryFieldsEmp
             module="invoice"
             label="invoice.note"
             value={invoice?.note}
-            onChange={(v) => dispatch({ type: 'UPDATE_NOTE', payload: v })}
+            onChange={(v) => onChange({ ...invoice, note: v })}
           />
         </Grid>
         <Grid item xs={3} className={classes.item}>
@@ -141,7 +141,7 @@ const InvoiceHeadPanel = ({ modulesManager, classes, invoice, mandatoryFieldsEmp
             module="invoice"
             label="invoice.paymentReference"
             value={invoice?.paymentReference}
-            onChange={(v) => dispatch({ type: 'UPDATE_PAYMENT_REFERENCE', payload: v })}
+            onChange={(v) => onChange({ ...invoice, paymentReference: v })}
           />
         </Grid>
       </Grid>
