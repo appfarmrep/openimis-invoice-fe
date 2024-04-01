@@ -15,7 +15,9 @@ const InvoiceStatusPicker = ({
   withLabel = true,
   required = false,
 }) => {
-  const options = Object.keys(STATUS).map((key) => ({
+  const options = Object.keys(STATUS)
+  .filter(key => STATUS[key] !== STATUS.PAID) // Filter out the 'PAID' status
+  .map((key) => ({
     value: STATUS[key],
     label: formatMessage(intl, "invoice", `invoice.status.${key}`),
   }));
@@ -34,7 +36,7 @@ const InvoiceStatusPicker = ({
       options={options}
       value={value}
       onChange={onChange}
-      readOnly={readOnly}
+      readOnly={readOnly || value === STATUS.PAID}
       required={required}
     />
   );

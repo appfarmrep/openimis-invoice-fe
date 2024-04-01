@@ -21,7 +21,10 @@ import { getEnumValue } from "../util/enum";
 import InvoiceTabPanel from "../components/InvoiceTabPanel";
 import { ACTION_TYPE } from "../reducer";
 import { defaultPageStyles } from "../util/styles";
-
+import AssignmentTurnedInIcon from '@mui/icons-material/AssignmentTurnedIn';
+import DoNotDisturbIcon from '@mui/icons-material/DoNotDisturb';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const InvoicePage = ({
   intl,
@@ -99,6 +102,33 @@ const InvoicePage = ({
         code: invoice?.code,
       }),
     );
+    toast.success("Invoice saved successfully!");
+  };
+  const abstainInvoice = (invoice) => {
+    console.log(invoiceUuid)
+    const status = "7";
+    const note = localStorage.getItem('invoiceNote') || invoice.note;
+    const paymentReference = localStorage.getItem('invoicePaymentReference') || invoice.paymentReference;
+    updateInvoice(
+      { id: invoiceUuid, status, note, paymentReference },
+      formatMessageWithValues(intl, "invoice", "invoice.update.mutationLabel", {
+        code: invoice?.code,
+      }),
+    );
+    toast.success("Invoice abstained successfully!");
+  };
+  const approveInvoice = (invoice) => {
+    console.log(invoiceUuid)
+    const status = "2";
+    const note = localStorage.getItem('invoiceNote') || invoice.note;
+    const paymentReference = localStorage.getItem('invoicePaymentReference') || invoice.paymentReference;
+    updateInvoice(
+      { id: invoiceUuid, status, note, paymentReference },
+      formatMessageWithValues(intl, "invoice", "invoice.update.mutationLabel", {
+        code: invoice?.code,
+      }),
+    );
+    toast.success("Invoice approved successfully!");
   };
 
   const actions = [
@@ -112,6 +142,18 @@ const InvoicePage = ({
         doIt: saveInvoice,
         icon: <SaveIcon />,
         tooltip: formatMessage(intl, "invoice", "saveButtonTooltip"),
+      },
+      !!invoice &&
+      getEnumValue(invoice?.status) !== STATUS.PAID && {
+        doIt: approveInvoice,
+        icon: <AssignmentTurnedInIcon />,
+        tooltip: formatMessage(intl, "invoice", "approveButtonTooltip"),
+      },
+      !!invoice &&
+      getEnumValue(invoice?.status) === STATUS.PAID && {
+        doIt: abstainInvoice,
+        icon: <DoNotDisturbIcon />,
+        tooltip: formatMessage(intl, "invoice", "abstainButtonTooltip"),
       },
   ];
 
@@ -132,6 +174,7 @@ const InvoicePage = ({
           actions={actions}
           setConfirmedAction={setConfirmedAction}
         />
+        <ToastContainer />
       </div>
     )
   );
