@@ -21,7 +21,7 @@ import { getEnumValue } from "../util/enum";
 import InvoiceTabPanel from "../components/InvoiceTabPanel";
 import { ACTION_TYPE } from "../reducer";
 import { defaultPageStyles } from "../util/styles";
-import AssignmentTurnedInIcon from '@mui/icons-material/AssignmentTurnedIn';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import DoNotDisturbIcon from '@mui/icons-material/DoNotDisturb';
 import { toast } from 'react-hot-toast';
 
@@ -145,7 +145,7 @@ const InvoicePage = ({
       !!invoice &&
       getEnumValue(invoice?.status) !== STATUS.PAID && {
         doIt: approveInvoice,
-        icon: <AssignmentTurnedInIcon />,
+        icon: <CheckCircleIcon />,
         tooltip: formatMessage(intl, "invoice", "approveButtonTooltip"),
       },
       !!invoice &&
