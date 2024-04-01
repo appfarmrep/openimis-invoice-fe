@@ -23,8 +23,7 @@ import { ACTION_TYPE } from "../reducer";
 import { defaultPageStyles } from "../util/styles";
 import AssignmentTurnedInIcon from '@mui/icons-material/AssignmentTurnedIn';
 import DoNotDisturbIcon from '@mui/icons-material/DoNotDisturb';
-import { toast, ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { toast } from 'react-hot-toast';
 
 const InvoicePage = ({
   intl,
@@ -174,7 +173,6 @@ const InvoicePage = ({
           actions={actions}
           setConfirmedAction={setConfirmedAction}
         />
-        <ToastContainer />
       </div>
     )
   );
