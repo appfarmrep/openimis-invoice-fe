@@ -21,9 +21,8 @@ import { getEnumValue } from "../util/enum";
 import InvoiceTabPanel from "../components/InvoiceTabPanel";
 import { ACTION_TYPE } from "../reducer";
 import { defaultPageStyles } from "../util/styles";
-import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-import DoNotDisturbIcon from '@mui/icons-material/DoNotDisturb';
 import { toast } from 'react-hot-toast';
+import { Icon } from '@iconify/react';
 
 const InvoicePage = ({
   intl,
@@ -145,13 +144,13 @@ const InvoicePage = ({
       !!invoice &&
       getEnumValue(invoice?.status) !== STATUS.PAID && {
         doIt: approveInvoice,
-        icon: <CheckCircleIcon />,
+        icon: <Icon icon="material-symbols:order-approve" />,
         tooltip: formatMessage(intl, "invoice", "approveButtonTooltip"),
       },
       !!invoice &&
       getEnumValue(invoice?.status) === STATUS.PAID && {
         doIt: abstainInvoice,
-        icon: <DoNotDisturbIcon />,
+        icon: <Icon icon="carbon:close-filled" />,
         tooltip: formatMessage(intl, "invoice", "abstainButtonTooltip"),
       },
   ];
