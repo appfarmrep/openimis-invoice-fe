@@ -32,7 +32,7 @@ const InvoiceStatusPicker = ({
       module="invoice"
       label={withLabel && label}
       options={options}
-      value={value === "2" || value === STATUS.PAID ? "Paid" : value}
+      value={value}
       onChange={onChange}
       readOnly={readOnly}
       required={required}
