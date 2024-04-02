@@ -148,14 +148,12 @@ const InvoicePage = ({
         icon: <SaveIcon />,
         tooltip: formatMessage(intl, "invoice", "saveButtonTooltip"),
       },
-      !!invoice &&
-      getEnumValue(invoice?.status) !== STATUS.PAID && {
+      invoice && getEnumValue(invoice?.status) !== STATUS.PAID && {
         doIt: approveInvoice,
         icon: <Icon icon="material-symbols:order-approve" />,
         tooltip: formatMessage(intl, "invoice", "approveButtonTooltip"),
       },
-      !!invoice &&
-      getEnumValue(invoice?.status) === STATUS.PAID && {
+      invoice && invoice?.status === "2" && {
         doIt: abstainInvoice,
         icon: <Icon icon="carbon:close-filled" />,
         tooltip: formatMessage(intl, "invoice", "abstainButtonTooltip"),
