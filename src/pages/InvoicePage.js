@@ -67,6 +67,8 @@ const InvoicePage = ({
 
   const back = () => history.goBack();
 
+  const [forceRender, setForceRender] = useState(0); // new state
+
   const onChange = (invoice) => setEditedInvoice(invoice);
 
   const titleParams = (invoice) => ({ label: invoice?.code });
@@ -102,8 +104,8 @@ const InvoicePage = ({
     );
     toast.success("Invoice saved successfully!");
   };
-  const abstainInvoice = (invoice) => {
-    console.log(invoiceUuid)
+  const abstainInvoice = () => {
+    console.log(invoice)
     const status = "7";
     const note = localStorage.getItem('invoiceNote') || invoice.note;
     const paymentReference = localStorage.getItem('invoicePaymentReference') || invoice.paymentReference;
@@ -114,9 +116,12 @@ const InvoicePage = ({
       }),
     );
     toast.success("Invoice abstained successfully!");
+    fetchInvoice([`id: "${invoiceUuid}"`]); // Refetch the invoice
+    setForceRender(prev => prev + 1);
   };
-  const approveInvoice = (invoice) => {
-    console.log(invoiceUuid)
+  
+  const approveInvoice = () => {
+    console.log(invoice)
     const status = "2";
     const note = localStorage.getItem('invoiceNote') || invoice.note;
     const paymentReference = localStorage.getItem('invoicePaymentReference') || invoice.paymentReference;
@@ -127,6 +132,8 @@ const InvoicePage = ({
       }),
     );
     toast.success("Invoice approved successfully!");
+    fetchInvoice([`id: "${invoiceUuid}"`]); // Refetch the invoice
+    setForceRender(prev => prev + 1);
   };
 
   const actions = [

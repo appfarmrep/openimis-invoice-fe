@@ -37,7 +37,8 @@
     "dist"
   ],
   "dependencies": {
-    "flat": "^5.0.2",
+    "@iconify/react": "^4.1.1",
+    "flat": "5.0.2",
     "react-hook-form": "^7.51.2"
   }
 }
