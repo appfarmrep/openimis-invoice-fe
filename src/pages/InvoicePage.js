@@ -121,8 +121,7 @@ const InvoicePage = ({
   };
   
   const approveInvoice = () => {
-    console.log(invoice)
-    const status = "2";
+    const status = STATUS.PAID;
     const note = localStorage.getItem('invoiceNote') || invoice.note;
     const paymentReference = localStorage.getItem('invoicePaymentReference') || invoice.paymentReference;
     updateInvoice(
@@ -147,6 +146,11 @@ const InvoicePage = ({
         doIt: saveInvoice,
         icon: <SaveIcon />,
         tooltip: formatMessage(intl, "invoice", "saveButtonTooltip"),
+      },
+      {
+        doIt: approveInvoice,
+        icon: <Icon icon="ph:check-fill" />,
+        tooltip: formatMessage(intl, "invoice", "approveButtonTooltip"),
       },
       
   ];
