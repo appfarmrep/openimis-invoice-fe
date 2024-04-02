@@ -149,8 +149,9 @@ const InvoiceHeadPanel = ({ modulesManager, classes, invoice, mandatoryFieldsEmp
         <Grid item xs={3} className={classes.item}>
           <InvoiceStatusPicker
             label="invoice.status.label"
-            value={status || invoice?.status}
+            value={status || invoice?.status || ''}
             onChange={handleStatusChange}
+            readOnly={status || value === "2"}
           />
         </Grid>
         <Grid item xs={3} className={classes.item}>

@@ -32,11 +32,11 @@ const InvoiceStatusPicker = ({
   return (
     <SelectInput
       module="invoice"
-      label={withLabel && label}
+      label={withLabel ? label : ''}
       options={options}
-      value={value === STATUS.PAID ? 'Paid' : value}
+      value={value === STATUS.PAID ? 'Paid' : value || ''}
       onChange={onChange}
-      readOnly={readOnly || value === STATUS.PAID}
+      readOnly={readOnly}
       required={required}
     />
   );
