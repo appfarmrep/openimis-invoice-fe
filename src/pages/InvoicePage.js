@@ -148,7 +148,7 @@ const InvoicePage = ({
         tooltip: formatMessage(intl, "invoice", "saveButtonTooltip"),
       },
       !!invoice &&
-      getEnumValue(invoice?.status) !== STATUS.PAID && {
+      getEnumValue(invoice?.status) !== "2" && {
         doIt: approveInvoice,
         icon: <Icon icon="ph:check-fill" />,
         tooltip: formatMessage(intl, "invoice", "approveButtonTooltip"),
