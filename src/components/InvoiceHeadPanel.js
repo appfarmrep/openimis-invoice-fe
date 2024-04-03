@@ -8,37 +8,35 @@ import ThirdpartyTypePicker from "../pickers/ThirdpartyTypePicker";
 import { getSubjectAndThirdpartyTypePicker } from "../util/subject-and-thirdparty-picker";
 import InvoiceStatusPicker from "../pickers/InvoiceStatusPicker";
 import { defaultHeadPanelStyles } from "../util/styles";
+import { useStore } from "../store";
 
 const InvoiceHeadPanel = ({ modulesManager, classes, invoice, mandatoryFieldsEmpty, onChange }) => {
   const taxAnalysisTotal = !!invoice?.taxAnalysis ? JSON.parse(invoice.taxAnalysis)?.["total"] : null;
 
-  const [status, setStatus] = useState(invoice?.status);
-  const [note, setNote] = useState(invoice?.note);
-  const [paymentReference, setPaymentReference] = useState(invoice?.paymentReference);
+  const { invoiceStatus, invoiceNote, invoicePaymentReference, setInvoiceStatus, setInvoiceNote, setInvoicePaymentReference } = useStore();
+
 
   useEffect(() => {
-    setStatus(invoice?.status);
-    setNote(invoice?.note);
-    setPaymentReference(invoice?.paymentReference);
+    setInvoiceStatus(invoice?.status);
+    setInvoiceNote(invoice?.note);
+    setInvoicePaymentReference(invoice?.paymentReference);
   }, [invoice]);
 
   const handleStatusChange = (v) => {
-    setStatus(v);
-    localStorage.setItem('invoiceStatus', v);
+    setInvoiceStatus(v);
     onChange({ ...invoice, status: v });
   };
 
   const handleNoteChange = (v) => {
-    setNote(v);
-    localStorage.setItem('invoiceNote', v);
+    setInvoiceNote(v);
     onChange({ ...invoice, note: v });
   };
 
   const handlePaymentReferenceChange = (v) => {
-    setPaymentReference(v);
-    localStorage.setItem('invoicePaymentReference', v);
+    setInvoicePaymentReference(v);
     onChange({ ...invoice, paymentReference: v });
   };
+
   return (
     <>
       <Grid container className={classes.tableTitle}>
@@ -149,7 +147,7 @@ const InvoiceHeadPanel = ({ modulesManager, classes, invoice, mandatoryFieldsEmp
         <Grid item xs={3} className={classes.item}>
           <InvoiceStatusPicker
             label="invoice.status.label"
-            value={status}
+            value={invoiceStatus}
             onChange={handleStatusChange}
           />
         </Grid>
@@ -157,7 +155,7 @@ const InvoiceHeadPanel = ({ modulesManager, classes, invoice, mandatoryFieldsEmp
           <TextInput
             module="invoice"
             label="invoice.note"
-            value={note}
+            value={invoiceNote}
             onChange={handleNoteChange}
           />
         </Grid>
@@ -168,7 +166,7 @@ const InvoiceHeadPanel = ({ modulesManager, classes, invoice, mandatoryFieldsEmp
           <TextInput
             module="invoice"
             label="invoice.paymentReference"
-            value={paymentReference}
+            value={invoicePaymentReference}
             onChange={handlePaymentReferenceChange}
           />
         </Grid>

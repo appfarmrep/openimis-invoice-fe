@@ -23,6 +23,7 @@ import { ACTION_TYPE } from "../reducer";
 import { defaultPageStyles } from "../util/styles";
 import { toast } from 'react-hot-toast';
 import { Icon } from '@iconify/react';
+import { useStore } from "../store";
 
 const InvoicePage = ({
   intl,
@@ -91,11 +92,12 @@ const InvoicePage = ({
     );
   };
 
+  const { invoiceStatus, invoiceNote, invoicePaymentReference } = useStore();
+
   const saveInvoice = (invoice) => {
-    console.log(invoiceUuid)
-    const status = localStorage.getItem('invoiceStatus') || invoice.status;
-    const note = localStorage.getItem('invoiceNote') || invoice.note;
-    const paymentReference = localStorage.getItem('invoicePaymentReference') || invoice.paymentReference;
+    const status = invoiceStatus || invoice.status;
+    const note = invoiceNote || invoice.note;
+    const paymentReference = invoicePaymentReference || invoice.paymentReference;
     updateInvoice(
       { id: invoiceUuid, status, note, paymentReference },
       formatMessageWithValues(intl, "invoice", "invoice.update.mutationLabel", {
@@ -104,11 +106,11 @@ const InvoicePage = ({
     );
     toast.success("Invoice saved successfully!");
   };
+
   const abstainInvoice = () => {
-    console.log(invoice)
     const status = "7";
-    const note = localStorage.getItem('invoiceNote') || invoice.note;
-    const paymentReference = localStorage.getItem('invoicePaymentReference') || invoice.paymentReference;
+    const note = invoiceNote || invoice.note;
+    const paymentReference = invoicePaymentReference || invoice.paymentReference;
     updateInvoice(
       { id: invoiceUuid, status, note, paymentReference },
       formatMessageWithValues(intl, "invoice", "invoice.update.mutationLabel", {
@@ -122,8 +124,8 @@ const InvoicePage = ({
   
   const approveInvoice = () => {
     const status = STATUS.PAID;
-    const note = localStorage.getItem('invoiceNote') || invoice.note;
-    const paymentReference = localStorage.getItem('invoicePaymentReference') || invoice.paymentReference;
+    const note = invoiceNote || invoice.note;
+    const paymentReference = invoicePaymentReference || invoice.paymentReference;
     updateInvoice(
       { id: invoiceUuid, status, note, paymentReference },
       formatMessageWithValues(intl, "invoice", "invoice.update.mutationLabel", {
@@ -147,11 +149,11 @@ const InvoicePage = ({
         icon: <SaveIcon />,
         tooltip: formatMessage(intl, "invoice", "saveButtonTooltip"),
       },
-      ...(invoice?.status !== STATUS.PAID ? [{
+      {
         doIt: approveInvoice,
         icon: <Icon icon="ph:check-fill" />,
         tooltip: formatMessage(intl, "invoice", "approveButtonTooltip"),
-      }] : []),
+      },
       
   ];
 
