@@ -56,10 +56,14 @@ const InvoicePage = ({
   useEffect(() => {
     if (prevSubmittingMutationRef.current && !submittingMutation) {
       journalize(mutation);
-      mutation?.actionType === ACTION_TYPE.DELETE_INVOICE && back();
+      if (mutation?.actionType === ACTION_TYPE.DELETE_INVOICE) {
+        back();
+      } else if (mutation?.actionType === ACTION_TYPE.UPDATE_INVOICE || mutation?.actionType === ACTION_TYPE.SAVE_INVOICE) {
+        fetchInvoice([`id: "${invoiceUuid}"`]);
+      }
     }
-  }, [submittingMutation]);
-
+  }, [submittingMutation, invoiceUuid]);
+  
   useEffect(() => {
     prevSubmittingMutationRef.current = submittingMutation;
   });
