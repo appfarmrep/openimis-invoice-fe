@@ -92,9 +92,9 @@ const InvoicePage = ({
     );
   };
 
-  const { invoiceStatus, invoiceNote, invoicePaymentReference, setInvoiceStatus } = useStore();
+  const { invoiceStatus, invoiceNote, invoicePaymentReference } = useStore();
 
-  const saveInvoice = (invoice) => {
+  const saveInvoiceCallback = (invoice) => {
     const status = invoiceStatus || invoice.status;
     const note = invoiceNote || invoice.note;
     const paymentReference = invoicePaymentReference || invoice.paymentReference;
@@ -104,10 +104,19 @@ const InvoicePage = ({
         code: invoice?.code,
       }),
     );
-    toast.success("Invoice saved successfully!");
   };
 
-  const abstainInvoice = () => {
+  const openSaveInvoiceConfirmDialog = () => {
+    setConfirmedAction(() => saveInvoiceCallback);
+    coreConfirm(
+      formatMessageWithValues(intl, "invoice", "invoice.save.confirm.title", {
+        code: invoice?.code,
+      }),
+      formatMessage(intl, "invoice", "invoice.save.confirm.message"),
+    );
+  };
+
+  const abstainInvoiceCallback = () => {
     const status = "7";
     const note = invoiceNote || invoice.note;
     const paymentReference = invoicePaymentReference || invoice.paymentReference;
@@ -117,13 +126,22 @@ const InvoicePage = ({
         code: invoice?.code,
       }),
     );
-    toast.success("Invoice abstained successfully!");
     fetchInvoice([`id: "${invoiceUuid}"`]); // Refetch the invoice
     setForceRender(prev => prev + 1);
   };
-  
-  const approveInvoice = () => {
-    const status = STATUS.PAID;
+
+  const openAbstainInvoiceConfirmDialog = () => {
+    setConfirmedAction(() => abstainInvoiceCallback);
+    coreConfirm(
+      formatMessageWithValues(intl, "invoice", "invoice.abstain.confirm.title", {
+        code: invoice?.code,
+      }),
+      formatMessage(intl, "invoice", "invoice.abstain.confirm.message"),
+    );
+  };
+
+  const approveInvoiceCallback = () => {
+    const status = "2";
     const note = invoiceNote || invoice.note;
     const paymentReference = invoicePaymentReference || invoice.paymentReference;
     updateInvoice(
@@ -132,10 +150,16 @@ const InvoicePage = ({
         code: invoice?.code,
       }),
     );
-    toast.success("Invoice approved successfully!");
-    fetchInvoice([`id: "${invoiceUuid}"`]); // Refetch the invoice
-    setForceRender(prev => prev + 1);
-    setInvoiceStatus(status);
+  };
+
+  const openApproveInvoiceConfirmDialog = () => {
+    setConfirmedAction(() => approveInvoiceCallback);
+    coreConfirm(
+      formatMessageWithValues(intl, "invoice", "invoice.approve.confirm.title", {
+        code: invoice?.code,
+      }),
+      formatMessage(intl, "invoice", "invoice.approve.confirm.message"),
+    );
   };
 
   console.log(invoice)
@@ -148,12 +172,12 @@ const InvoicePage = ({
         tooltip: formatMessage(intl, "invoice", "deleteButtonTooltip"),
       },
       {
-        doIt: saveInvoice,
+        doIt: openSaveInvoiceConfirmDialog,
         icon: <SaveIcon />,
         tooltip: formatMessage(intl, "invoice", "saveButtonTooltip"),
       },
       {
-        doIt: approveInvoice,
+        doIt: openApproveInvoiceConfirmDialog,
         icon: <Icon icon="ph:check-fill" />,
         tooltip: formatMessage(intl, "invoice", "approveButtonTooltip"),
       },
