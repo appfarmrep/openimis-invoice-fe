@@ -92,7 +92,7 @@ const InvoicePage = ({
     );
   };
 
-  const { invoiceStatus, invoiceNote, invoicePaymentReference } = useStore();
+  const { invoiceStatus, invoiceNote, invoicePaymentReference, setInvoiceStatus } = useStore();
 
   const saveInvoice = (invoice) => {
     const status = invoiceStatus || invoice.status;
@@ -135,7 +135,10 @@ const InvoicePage = ({
     toast.success("Invoice approved successfully!");
     fetchInvoice([`id: "${invoiceUuid}"`]); // Refetch the invoice
     setForceRender(prev => prev + 1);
+    setInvoiceStatus(status);
   };
+
+  console.log(invoice)
 
   const actions = [
     !!invoice &&
