@@ -15,7 +15,7 @@ const InvoiceStatusPicker = ({
   withLabel = true,
   required = false,
 }) => {
-  const options = Object.keys(STATUS).map((key) => ({
+  const options = Object.keys(STATUS).filter(key => key !== 'PAID').map((key) => ({
     value: STATUS[key],
     label: formatMessage(intl, "invoice", `invoice.status.${key}`),
   }));
