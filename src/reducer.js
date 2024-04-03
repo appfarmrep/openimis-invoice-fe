@@ -519,7 +519,7 @@ function reducer(
         invoice: {
           ...state.invoice,
           ...action.payload.data.updateInvoice,
-          id: decodeId(action.payload.data.updateInvoice.id),
+          id: action.payload.data.updateInvoice.id,
           status: getEnumValue(action.payload.data.updateInvoice?.status),
         },
       };
