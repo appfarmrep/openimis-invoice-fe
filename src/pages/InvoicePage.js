@@ -95,18 +95,37 @@ const InvoicePage = ({
     );
   };
 
-  const { invoiceStatus, invoiceNote, invoicePaymentReference } = useStore();
+  const [invoiceStatus, setInvoiceStatus] = useState(localStorage.getItem('invoiceStatus'));
+  const [invoiceNote, setInvoiceNote] = useState(localStorage.getItem('invoiceNote'));
+  const [invoicePaymentReference, setInvoicePaymentReference] = useState(localStorage.getItem('invoicePaymentReference'));
+
+  useEffect(() => {
+    const handleStorageChange = (e) => {
+      if (e.key === 'invoiceStatus') setInvoiceStatus(e.newValue);
+      if (e.key === 'invoiceNote') setInvoiceNote(e.newValue);
+      if (e.key === 'invoicePaymentReference') setInvoicePaymentReference(e.newValue);
+    };
+    window.addEventListener('storage', handleStorageChange);
+    return () => window.removeEventListener('storage', handleStorageChange);
+  }, []);
 
   const saveInvoiceCallback = (invoice) => {
-    const status = invoiceStatus || invoice.status;
-    const note = invoiceNote || invoice.note;
-    const paymentReference = invoicePaymentReference || invoice.paymentReference;
-    updateInvoice(
-      { id: invoiceUuid, status, note, paymentReference },
-      formatMessageWithValues(intl, "invoice", "invoice.update.mutationLabel", {
-        code: invoice?.code,
-      }),
-    );
+    try {
+      if (!invoiceStatus || !invoiceNote || !invoicePaymentReference) {
+        return;
+      }
+      const status = invoiceStatus;
+      const note = invoiceNote;
+      const paymentReference = invoicePaymentReference;
+      updateInvoice(
+        { id: invoiceUuid, status, note, paymentReference },
+        formatMessageWithValues(intl, "invoice", "invoice.update.mutationLabel", {
+          code: invoice?.code,
+        }),
+      );
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const openSaveInvoiceConfirmDialog = () => {
@@ -129,8 +148,6 @@ const InvoicePage = ({
         code: invoice?.code,
       }),
     );
-    fetchInvoice([`id: "${invoiceUuid}"`]); // Refetch the invoice
-    setForceRender(prev => prev + 1);
   };
 
   const openAbstainInvoiceConfirmDialog = () => {

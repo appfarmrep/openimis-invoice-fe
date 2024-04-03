@@ -8,33 +8,34 @@ import ThirdpartyTypePicker from "../pickers/ThirdpartyTypePicker";
 import { getSubjectAndThirdpartyTypePicker } from "../util/subject-and-thirdparty-picker";
 import InvoiceStatusPicker from "../pickers/InvoiceStatusPicker";
 import { defaultHeadPanelStyles } from "../util/styles";
-import { useStore } from "../store";
 
 const InvoiceHeadPanel = ({ modulesManager, classes, invoice, mandatoryFieldsEmpty, onChange }) => {
   const taxAnalysisTotal = !!invoice?.taxAnalysis ? JSON.parse(invoice.taxAnalysis)?.["total"] : null;
 
-  const { invoiceStatus, invoiceNote, invoicePaymentReference, setInvoiceStatus, setInvoiceNote, setInvoicePaymentReference } = useStore();
-
+  // Set the default value for the local storage to the invoice
+  const [invoiceStatus, setInvoiceStatus] = useState(localStorage.getItem('invoiceStatus') || invoice?.status);
+  const [invoiceNote, setInvoiceNote] = useState(localStorage.getItem('invoiceNote') || invoice?.note);
+  const [invoicePaymentReference, setInvoicePaymentReference] = useState(localStorage.getItem('invoicePaymentReference') || invoice?.paymentReference);
 
   useEffect(() => {
-    setInvoiceStatus(invoice?.status);
-    setInvoiceNote(invoice?.note);
-    setInvoicePaymentReference(invoice?.paymentReference);
-  }, [invoice]);
+    localStorage.setItem('invoiceStatus', invoiceStatus);
+    localStorage.setItem('invoiceNote', invoiceNote);
+    localStorage.setItem('invoicePaymentReference', invoicePaymentReference);
+  }, [invoiceStatus, invoiceNote, invoicePaymentReference]);
 
   const handleStatusChange = (v) => {
     setInvoiceStatus(v);
-    onChange({ ...invoice, status: v });
+    onChange((prevInvoice) => ({ ...prevInvoice, status: v }));
   };
 
   const handleNoteChange = (v) => {
     setInvoiceNote(v);
-    onChange({ ...invoice, note: v });
+    onChange((prevInvoice) => ({ ...prevInvoice, note: v }));
   };
 
   const handlePaymentReferenceChange = (v) => {
     setInvoicePaymentReference(v);
-    onChange({ ...invoice, paymentReference: v });
+    onChange((prevInvoice) => ({ ...prevInvoice, paymentReference: v }));
   };
 
   return (
