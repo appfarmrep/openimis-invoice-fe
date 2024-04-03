@@ -52,6 +52,13 @@
         "message": "Deleting data does not mean erasing it from openIMIS database. The data will only be deactivated from the viewed list."
       },
       "mutationLabel": "Delete Invoice {code}"
+    },
+    "update": {
+      "confirm": {
+        "title": "Update {code}?",
+        "message": "You are about to update the invoice. Please note that this action will modify the existing invoice details. Make sure to review all changes before proceeding. Do you want to continue?"
+      },
+      "mutationLabel": "Update Invoice {code}"
     }
   },
   "invoices": {

@@ -112,10 +112,10 @@ const InvoicePage = ({
   const openSaveInvoiceConfirmDialog = () => {
     setConfirmedAction(() => saveInvoiceCallback);
     coreConfirm(
-      formatMessageWithValues(intl, "invoice", "invoice.save.confirm.title", {
+      formatMessageWithValues(intl, "invoice", "invoice.update.confirm.title", {
         code: invoice?.code,
       }),
-      formatMessage(intl, "invoice", "invoice.save.confirm.message"),
+      formatMessage(intl, "invoice", "invoice.update.confirm.message"),
     );
   };
 
@@ -136,10 +136,10 @@ const InvoicePage = ({
   const openAbstainInvoiceConfirmDialog = () => {
     setConfirmedAction(() => abstainInvoiceCallback);
     coreConfirm(
-      formatMessageWithValues(intl, "invoice", "invoice.abstain.confirm.title", {
+      formatMessageWithValues(intl, "invoice", "invoice.update.confirm.title", {
         code: invoice?.code,
       }),
-      formatMessage(intl, "invoice", "invoice.abstain.confirm.message"),
+      formatMessage(intl, "invoice", "invoice.update.confirm.message"),
     );
   };
 
@@ -158,10 +158,10 @@ const InvoicePage = ({
   const openApproveInvoiceConfirmDialog = () => {
     setConfirmedAction(() => approveInvoiceCallback);
     coreConfirm(
-      formatMessageWithValues(intl, "invoice", "invoice.approve.confirm.title", {
+      formatMessageWithValues(intl, "invoice", "invoice.update.confirm.title", {
         code: invoice?.code,
       }),
-      formatMessage(intl, "invoice", "invoice.approve.confirm.message"),
+      formatMessage(intl, "invoice", "invoice.update.confirm.message"),
     );
   };
 

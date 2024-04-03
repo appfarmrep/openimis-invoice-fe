@@ -514,14 +514,15 @@ function reducer(
       return dispatchMutationResp(state, "deleteInvoice", action);
     // Update
     case SUCCESS(ACTION_TYPE.UPDATE_INVOICE):
-  return {
-    ...state,
-    invoice: {
-      ...state.invoice,
-      ...action.payload.data.updateInvoice,
-      id: action.payload.data.updateInvoice.id,
-    },
-  };
+      return {
+        ...state,
+        invoice: {
+          ...state.invoice,
+          ...action.payload.data.updateInvoice,
+          id: decodeId(action.payload.data.updateInvoice.id),
+          status: getEnumValue(action.payload.data.updateInvoice?.status),
+        },
+      };
     case SUCCESS(ACTION_TYPE.CREATE_INVOICE_PAYMENT):
       return dispatchMutationResp(state, "createInvoicePayment", action);
     case SUCCESS(ACTION_TYPE.UPDATE_INVOICE_PAYMENT):
