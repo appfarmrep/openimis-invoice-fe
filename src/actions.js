@@ -256,14 +256,7 @@ export function updateInvoice(invoice, clientMutationLabel) {
       clientMutationLabel,
       requestedDateTime,
     },
-  ).then((response) => {
-    if (response.data) {
-      dispatch({
-        type: SUCCESS(ACTION_TYPE.UPDATE_INVOICE),
-        payload: response.data,
-      });
-    }
-  });
+  );
 }
 
 
